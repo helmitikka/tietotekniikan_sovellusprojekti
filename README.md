@@ -1,1 +1,3 @@
 # tietotekniikan_sovellusprojekti
+
+terve!
