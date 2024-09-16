@@ -28,7 +28,9 @@ void loop()
   if(newTimerInterrupt == true)
   {
      // new random number must be generated
-     // and corresponding let must be activated
+     // and corresponding led must be activated
+     int randomNumber = random(0, 4);
+     setLed(randomNumber);
   }
 }
 
