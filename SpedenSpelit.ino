@@ -18,10 +18,11 @@ void setup()
 
 void loop()
 {
-  if(buttonNumber>=0)
+  if(buttonNumber>=0 && buttonNumber < 4)
   {
      // start the game if buttonNumber == 4
      // check the game if 0<=buttonNumber<4
+     checkGame(buttonNumber);
   }
 
   if(newTimerInterrupt == true)
