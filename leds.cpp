@@ -3,7 +3,10 @@
 
 void initializeLeds()
 {
-// see requirements for this function from leds.h
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  pinMode(A4, OUTPUT);
+  pinMode(A5, OUTPUT);
 }
 
 void setLed(byte ledNumber)
