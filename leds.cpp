@@ -1,25 +1,32 @@
 #include "leds.h"
 
+const int ledPins[] = {A2, A3, A4, A5}; // Pins for LEDs
 
 void initializeLeds()
 {
-  pinMode(A2, OUTPUT);
-  pinMode(A3, OUTPUT);
-  pinMode(A4, OUTPUT);
-  pinMode(A5, OUTPUT);
+    // initialized all LEDs in ledPins:
+    for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
+    {
+        pinMode(ledPins[i], OUTPUT);
+    }
 }
 
 void setLed(byte ledNumber)
 {
-// see requirements for this function from leds.h
-
+    // Turns on a LED
+    if (ledNumber >= 0 && ledNumber < sizeof(ledPins) / sizeof(ledPins[0]))
+    {
+        digitalWrite(ledPins[ledNumber], HIGH); 
+    }
 }
-
 
 void clearAllLeds()
 {
-// see requirements for this function from leds.h
- 
+    // Turn off all LEDs
+    for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
+    {
+        digitalWrite(ledPins[i], LOW);
+    } 
 }
 
 void setAllLeds()
