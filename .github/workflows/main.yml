@@ -1,7 +1,10 @@
 on:
   pull_request:
     branches:
-      - Kehitys  # Vain tässä haarassa
+      - main
+  push:
+    branches:
+      - Kehitys
   
   workflow_dispatch:  # Sallii manuaalisen käynnistyksen Githubin Actions-välilehdeltä
 
