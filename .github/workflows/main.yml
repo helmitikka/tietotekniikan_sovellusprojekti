@@ -2,11 +2,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - Kehitys
-  
-  workflow_dispatch:  # Sallii manuaalisen käynnistyksen Githubin Actions-välilehdeltä
 
 jobs:
   lint:
