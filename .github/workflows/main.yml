@@ -26,4 +26,4 @@ jobs:
 # https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners
 
 # Docker-asennuksen ohjeet:
-#https://docs.docker.com/engine/install/ubuntu/
+# https://docs.docker.com/engine/install/ubuntu/
