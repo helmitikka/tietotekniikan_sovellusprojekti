@@ -1,6 +1,6 @@
 #include "leds.h"
 
-const int ledPins[] = {A2, A3, A4, A5}; // Pins for LEDs
+const int ledPins[] = {2,3,4,5}; // Pins for LEDs (A2-A5)
 
 void initializeLeds()
 {
@@ -14,10 +14,7 @@ void initializeLeds()
 void setLed(byte ledNumber)
 {
     // Turns on a LED
-    if (ledNumber >= 0 && ledNumber < sizeof(ledPins) / sizeof(ledPins[0]))
-    {
-        digitalWrite(ledPins[ledNumber], HIGH); 
-    }
+    digitalWrite(ledNumber, HIGH); 
 }
 
 void clearAllLeds()
