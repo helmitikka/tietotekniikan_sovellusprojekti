@@ -1,0 +1,23 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    # https://github.com/marketplace/actions/arduino-arduino-lint-action
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/arduino-lint-action@v1
+        with:
+          library-manager: update
+          compliance: permissive
+          path: ./SpedenSpelit
+
+  arduino_ci:
+    # https://github.com/marketplace/actions/arduino_ci
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Arduino-CI/action@stable-1.x
