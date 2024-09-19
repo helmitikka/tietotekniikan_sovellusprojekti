@@ -21,3 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: Arduino-CI/action@stable-1.x
+
+# Github Actions-asennuksen ohjeet:
+# https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/adding-self-hosted-runners
+
+# Docker-asennuksen ohjeet:
+#https://docs.docker.com/engine/install/ubuntu/
