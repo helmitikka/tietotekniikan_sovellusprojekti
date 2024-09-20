@@ -64,6 +64,8 @@ ISR(TIMER1_COMPA_vect)
   Communicate to loop() that it's time to make new random number.
   Increase timer interrupt rate after 10 interrupts.
   */
+
+  newTimerInterrupt = true; // generates new number in loop
   
 }
 
@@ -75,8 +77,7 @@ void checkGame(byte nbrOfButtonPush)
   {
     // User pressed correctly
     currentScore++;
-    clearAllLeds();
-    newTimerInterrupt = true; // generates new number in loop
+    clearAllLeds();    
   }
 }
 
