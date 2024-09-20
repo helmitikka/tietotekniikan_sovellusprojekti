@@ -9,6 +9,8 @@
 // loop() function and interrupt handlers
 volatile int buttonNumber = -1;           // for buttons interrupt handler
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
+int randomNumber; // 0,1,2,3 randomly
+volatile int currentScore = 0; // Current score = total number of correct presses
 
 
 void setup()
@@ -31,8 +33,9 @@ void loop()
   {
      // new random number must be generated
      // and corresponding led must be activated
-     int randomNumber = random(0, 4);
+     randomNumber = random(0, 4);
      setLed(randomNumber);
+     newTimerInterrupt = false;
   }
 }
 
@@ -68,6 +71,13 @@ ISR(TIMER1_COMPA_vect)
 void checkGame(byte nbrOfButtonPush)
 {
 	// see requirements for the function from SpedenSpelit.h
+  if(buttonNumber == randomNumber)
+  {
+    // User pressed correctly
+    currentScore++;
+    clearAllLeds();
+    newTimerInterrupt = true; // generates new number in loop
+  }
 }
 
 
