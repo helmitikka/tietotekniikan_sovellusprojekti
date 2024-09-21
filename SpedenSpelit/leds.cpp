@@ -40,7 +40,7 @@ void show1()
 {
 // 1-15 binary numbers LED show
 
-    //for()
+    while(gameRunning == false && currentScore == 0)
     {
         // 1
         setLed(0);
