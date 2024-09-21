@@ -20,7 +20,7 @@ ISR(PCINT0_vect)
   {
     if (digitalRead(buttonPins[i]) == LOW)
     {
-      buttonNumber = buttonPins[i];
+      buttonNumber = i;
     }
   }
 }
