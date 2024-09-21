@@ -77,7 +77,9 @@ void checkGame(byte nbrOfButtonPush)
   {
     // User pressed correctly
     currentScore++;
-    clearAllLeds();    
+    showNumber(currentScore);
+
+    clearAllLeds();
   }
 }
 
