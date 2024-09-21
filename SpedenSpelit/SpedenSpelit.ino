@@ -17,9 +17,9 @@ int numberList[100];
 
 void setup()
 {
-  /*
-    Initialize here all modules
-  */
+  initializeLeds();
+  initializeDisplay();
+  initButtonsAndButtonInterrupts();
 }
 
 void loop()
@@ -99,7 +99,8 @@ void endGame() // Ends the game.
 
 void initializeGame()
 {
-	// see requirements for the function from SpedenSpelit.h
+	
+
 }
 
 void startTheGame()
