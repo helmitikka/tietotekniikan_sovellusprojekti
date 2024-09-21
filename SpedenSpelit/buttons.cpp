@@ -1,7 +1,5 @@
 #include "buttons.h"
 
-extern volatile int buttonNumber;
-
 const int buttonPins[] = {8, 9, 10, 11};
 
 void initButtonsAndButtonInterrupts(void)

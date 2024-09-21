@@ -8,6 +8,8 @@
 const byte firstPin = 2; // First PinChangeInterrupt on D-bus
 const byte lastPin =  6; // Last PinChangeInterrupt on D-bus
 
+extern volatile int buttonNumber;
+
 /* 
   initButtonsAndButtonInterrupts subroutine is called from Setup() function
   during the initialization of Speden Spelit. This function does the following:
