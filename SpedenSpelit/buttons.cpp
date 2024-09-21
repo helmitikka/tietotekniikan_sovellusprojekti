@@ -2,18 +2,16 @@
 
 const int buttonPins[] = {8, 9, 10, 11};
 
-void initButtonsAndButtonInterrupts(void)
+void initButtonsAndButtonInterrupts(void) // Initializes all buttons
 {
     for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
-      // Aktivoi napit käytettäviksi
       pinMode(buttonPins[i], INPUT_PULLUP);
     }
 }
 
-ISR(PCINT0_vect)
+ISR(PCINT0_vect) // got an interrupt
 {
-  // Saatu interrupt, tarkistetaan mistä pinnistä
   for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
   {
     if (digitalRead(buttonPins[i]) == LOW)
