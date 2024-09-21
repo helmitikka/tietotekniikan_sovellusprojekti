@@ -33,7 +33,7 @@ void loop()
   {
      // new random number must be generated
      // and corresponding led must be activated
-     randomNumber = random(0, 4);
+     randomNumber = random(0, 4); // 0,1,2,3
      setLed(randomNumber);
      newTimerInterrupt = false;
   }
