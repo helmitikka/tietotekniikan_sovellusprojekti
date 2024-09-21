@@ -45,86 +45,86 @@ void show1()
         // 1
         setLed(0);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 2
         setLed(1);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 3
         setLed(0);
         setLed(1);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 4
         setLed(2);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 5
         setLed(0);
         setLed(2);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 6
         setLed(1);
         setLed(2);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 7
         setLed(0);
         setLed(1);
         setLed(2);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 8
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 9
         setLed(0);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 10
         setLed(1);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 11
         setLed(0);
         setLed(1);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 12
         setLed(2);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 13
         setLed(0);
         setLed(2);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 14
         setLed(1);
         setLed(2);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
         // 15
         setLed(0);
@@ -132,7 +132,7 @@ void show1()
         setLed(2);
         setLed(3);
         delay(1500);
-        void clearAllLeds();
+        clearAllLeds();
         delay(2000);
     
     }
