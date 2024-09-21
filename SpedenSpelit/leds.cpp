@@ -141,5 +141,10 @@ void show1()
 
 void show2(int rounds)
 {
-// see requirements for this function from leds.h  
+// see requirements for this function from leds.h
+    while(gameRunning == false && currentScore > 0)
+    {
+        rounds = 10;
+        //for()
+    }
 }
