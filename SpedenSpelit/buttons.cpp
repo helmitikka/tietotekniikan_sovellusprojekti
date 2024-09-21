@@ -2,28 +2,25 @@
 
 extern volatile int buttonNumber;
 
+const int buttonPins[] = {8, 9, 10, 11};
+
 void initButtonsAndButtonInterrupts(void)
 {
-  // See requirements for this function from buttons.h
-    // Initialize button pins
-    for (int i = firstPin; i <= lastPin; i++)
+    for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
-      pinMode(i, INPUT_PULLUP); // Set pins 2,3,4,5,6 as INPUT_PULLUP
+      // Aktivoi napit käytettäviksi
+      pinMode(buttonPins[i], INPUT_PULLUP);
     }
 }
 
-ISR(PCINT2_vect) {
-   /*
-     Here you implement logic for handling
-	 interrupts from 2,3,4,5 pins for Game push buttons
-	 and for pin 6 for start Game push button.
-   */
-    for (int i = firstPin; i <= lastPin; i++)
+ISR(PCINT0_vect)
+{
+  // Saatu interrupt, tarkistetaan mistä pinnistä
+  for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
+  {
+    if (digitalRead(buttonPins[i]) == LOW)
     {
-      if (digitalRead(i) == LOW)
-      {
-        buttonNumber = i;
-        return;
-      }
+      buttonNumber = buttonPins[i];
     }
+  }
 }
