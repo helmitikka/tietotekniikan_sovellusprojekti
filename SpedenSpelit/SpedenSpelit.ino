@@ -76,7 +76,7 @@ ISR(TIMER1_COMPA_vect)
 void checkGame(byte nbrOfButtonPush)
 {
 	// see requirements for the function from SpedenSpelit.h
-  if(buttonNumber == randomNumber)
+  if(nbrOfButtonPush == numberList[currentScore])
   {
     // User pressed correctly
     currentScore++;
@@ -84,8 +84,16 @@ void checkGame(byte nbrOfButtonPush)
 
     clearAllLeds();
   }
+  else
+  {
+    endGame();
+  }
 }
 
+void endGame() // Ends the game.
+{
+
+}
 
 void initializeGame()
 {
