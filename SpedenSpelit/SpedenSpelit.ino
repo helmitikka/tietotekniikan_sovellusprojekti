@@ -12,6 +12,7 @@ volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 int randomNumber; // 0,1,2,3 randomly
 volatile int currentScore = 0; // Current score = total number of correct presses
 
+int numberList[100];
 
 void setup()
 {
@@ -33,8 +34,10 @@ void loop()
   {
      // new random number must be generated
      // and corresponding led must be activated
+     // add random number to number list for comparing
      randomNumber = random(0, 4); // 0,1,2,3
      setLed(randomNumber);
+     numberList[currentScore] = randomNumber;
      newTimerInterrupt = false;
   }
 }
