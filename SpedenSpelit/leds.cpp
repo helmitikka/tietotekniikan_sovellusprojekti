@@ -14,7 +14,7 @@ void initializeLeds()
 void setLed(byte ledNumber)
 {
     // Turns on a LED
-    digitalWrite(ledNumber, HIGH); 
+    digitalWrite(ledPins[ledNumber], HIGH); 
 }
 
 void clearAllLeds()
@@ -28,7 +28,11 @@ void clearAllLeds()
 
 void setAllLeds()
 {
-// see requirements for this function from leds.h
+// Turn on all LEDs
+    for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
+    {
+        digitalWrite(ledPins[i], HIGH);
+    }
 }
 
 
