@@ -11,6 +11,7 @@ volatile int buttonNumber = -1;           // for buttons interrupt handler
 volatile bool newTimerInterrupt = false;  // for timer interrupt handler
 int randomNumber; // 0,1,2,3 randomly
 volatile int currentScore = 0; // Current score = total number of correct presses
+volatile bool gameRunning = false;
 
 int numberList[100];
 
@@ -82,6 +83,7 @@ void checkGame(byte nbrOfButtonPush)
     currentScore++;
     showNumber(currentScore);
 
+    buttonNumber = -1;
     clearAllLeds();
   }
   else
@@ -103,5 +105,10 @@ void initializeGame()
 void startTheGame()
 {
    // see requirements for the function from SpedenSpelit.h
+
+   currentScore = 0;
+   gameRunning = true;
+   newTimerInterrupt = true;
+   buttonNumber = -1;
 }
 
