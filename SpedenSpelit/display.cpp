@@ -29,13 +29,10 @@ void showNumber(int num) // Shows the given number on two 7 segment displays
   int tens = num / 10;   // Get the tens digit
   int ones = num % 10;   // Get the ones digit
 
-  digitalWrite(latchPin, LOW); // Latch down
+  digitalWrite(latchPin, LOW); // Latch down -> ready to receive new numbers
 
-  // First 8 bits goes through 1st registers Qh' -> 2nd registers SER
-  shiftOut(dataPin, clockPin, MSBFIRST, numbers[ones]);
-
-  // Second 8 bits stays on the 1st register
-  shiftOut(dataPin, clockPin, MSBFIRST, numbers[tens]);
+  shiftOut(dataPin, clockPin, MSBFIRST, numbers[ones]); // First 8 bits goes through 1st registers Qh' -> 2nd registers SER
+  shiftOut(dataPin, clockPin, MSBFIRST, numbers[tens]); // Second 8 bits stays on the 1st register
 
   digitalWrite(latchPin, HIGH); // Latch up -> Numbers shown
 }
