@@ -14,9 +14,9 @@ ISR(PCINT0_vect) // got an interrupt
 {
   for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
   {
-    if (digitalRead(buttonPins[i]) == LOW)
+    if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
     {
-      buttonNumber = i;
+      buttonNumber = i; // buttonNumber will be 0-3
     }
   }
 }
