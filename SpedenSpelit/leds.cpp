@@ -2,33 +2,29 @@
 
 const int ledPins[] = {2,3,4,5}; // Pins for LEDs (A2-A5)
 
-void initializeLeds()
-{
-    // initialized all LEDs in ledPins:
+void initializeLeds() // initialized all LEDs in ledPins
+{ 
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
         pinMode(ledPins[i], OUTPUT);
     }
 }
 
-void setLed(byte ledNumber)
+void setLed(byte ledNumber) // Turns on a LED
 {
-    // Turns on a LED
     digitalWrite(ledPins[ledNumber], HIGH); 
 }
 
-void clearAllLeds()
+void clearAllLeds() // Turn off all LEDs
 {
-    // Turn off all LEDs
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
         digitalWrite(ledPins[i], LOW);
     } 
 }
 
-void setAllLeds()
+void setAllLeds() // Turn on all LEDs
 {
-// Turn on all LEDs
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
         digitalWrite(ledPins[i], HIGH);
@@ -36,10 +32,8 @@ void setAllLeds()
 }
 
 
-void show1()
+void show1() // 1-15 binary numbers LED show
 {
-// 1-15 binary numbers LED show
-
     while(gameRunning == false && currentScore == 0)
     {
         // 1
