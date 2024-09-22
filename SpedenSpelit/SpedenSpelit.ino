@@ -32,16 +32,33 @@ void loop()
     endGame();
   }
 
-  if(buttonNumber>=0 && buttonNumber < 4)
+  // start the game if buttonNumber == 4
+  if(buttonNumber == 4 && gameRunning == false)
   {
-     // start the game if buttonNumber == 4
-     if(buttonNumber == 4 && gameRunning == false)
-     {
-      startTheGame();
-     }
+  startTheGame();
+  }
 
-     // check the game if 0<=buttonNumber<4
-     checkGame(buttonNumber);
+  if(gameRunning)
+  {
+    if(buttonNumber>=0 && buttonNumber < 4)
+    {
+      // check the game if 0<=buttonNumber<4
+      checkGame(buttonNumber);
+    }
+    if(numberOfTimerInterrupts % 10 == 0)
+    {
+      // Speeds up the timer by 10% every 10th interrupt
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;
+      OCR1A = timerInterruptSpeed;
+    }
+  }
+  else // Game not running
+  {
+    // After 5 interrupts, show high score
+    if(numberOfTimerInterrupts == 5)
+    {
+      showNumber(highScore);
+    }
   }
 
   if(newTimerInterrupt == true)
@@ -72,25 +89,10 @@ void initializeTimer(void)
 }
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
+  numberOfTimerInterrupts++;
   if(gameRunning)
   {
-    numberOfTimerInterrupts++;
     newTimerInterrupt = true; // generates new random number in loop
-
-    if(numberOfTimerInterrupts % 10 == 0)
-    {
-      // Speeds up the timer by 10% every 10th interrupt
-      timerInterruptSpeed = timerInterruptSpeed * 0.9;
-      OCR1A = timerInterruptSpeed;
-    }
-  }
-  else // Game not running
-  {
-    // After 5 interrupts, show high score
-    if(numberOfTimerInterrupts == 5)
-    {
-      showNumber(highScore);
-    }
   }
 }
 
