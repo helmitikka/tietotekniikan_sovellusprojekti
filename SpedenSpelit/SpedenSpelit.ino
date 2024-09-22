@@ -141,6 +141,7 @@ void startTheGame()
    // see requirements for the function from SpedenSpelit.h
 
    currentScore = 0;
+   showNumber(currentScore);
    gameRunning = true;
    buttonNumber = -1;
    missedPresses = 0;
