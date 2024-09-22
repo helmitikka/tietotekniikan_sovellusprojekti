@@ -1,8 +1,8 @@
 #include "leds.h"
 
-const int ledPins[] = {2,3,4,5}; // Pins for LEDs (A2-A5)
+const int ledPins[] = {2,3,4,5}; // Pins for LEDs (D2,D3,D4,D5)
 
-void initializeLeds() // initialized all LEDs in ledPins
+void initializeLeds()
 { 
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
@@ -10,12 +10,12 @@ void initializeLeds() // initialized all LEDs in ledPins
     }
 }
 
-void setLed(byte ledNumber) // Turns on a LED
+void setLed(byte ledNumber)
 {
     digitalWrite(ledPins[ledNumber], HIGH); 
 }
 
-void clearAllLeds() // Turn off all LEDs
+void clearAllLeds()
 {
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
@@ -23,7 +23,7 @@ void clearAllLeds() // Turn off all LEDs
     } 
 }
 
-void setAllLeds() // Turn on all LEDs
+void setAllLeds()
 {
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
@@ -32,7 +32,7 @@ void setAllLeds() // Turn on all LEDs
 }
 
 
-void show1() // 1-15 binary numbers LED show
+void show1()
 {
     while(gameRunning == false && currentScore == 0)
     {
