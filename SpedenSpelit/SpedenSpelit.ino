@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-volatile int buttonNumber = 4;           // Which button was pressed by the player 0,1,2,3
+volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
 volatile bool newTimerInterrupt = false;  // Generates a new random number when True
 int randomNumber;                         // Random number: 0,1,2,3
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
@@ -30,43 +30,6 @@ void setup()
 
 void loop()
 {
-  if(missedPresses > 4)
-  {
-    Serial.println("Too many missed presses");
-    endGame();
-  }
-
-  // start the game if buttonNumber == 3
-  if(buttonNumber == 3 && gameRunning == false)
-  {
-    startTheGame();
-  }
-
-  if(gameRunning)
-  {
-    if(buttonNumber>=0 && buttonNumber < 4)
-    {
-      // check the game if 0<=buttonNumber<4
-      checkGame(buttonNumber);
-    }
-    if(numberOfTimerInterrupts % 10 == 0)
-    {
-      // Speeds up the timer by 10% every 10th interrupt
-      timerInterruptSpeed = timerInterruptSpeed * 0.9;
-      OCR1A = timerInterruptSpeed;
-    }
-  }
-  else // Game not running
-  {
-    // After 5 interrupts, show high score
-    if(numberOfTimerInterrupts == 5)
-    {
-      Serial.print("Now showing high score: ");
-      Serial.println(highScore);
-      showNumber(highScore);
-    }
-  }
-
   if(newTimerInterrupt == true)
   {
     newTimerInterrupt = false;
@@ -81,6 +44,47 @@ void loop()
      missedPresses++;
      
   }
+  
+  if(missedPresses > 4)
+  {
+    Serial.println("Too many missed presses");
+    endGame();
+  }
+
+
+
+  if(gameRunning)
+  {
+    if(buttonNumber>=0 && buttonNumber < 4)
+    {
+      Serial.print("Pressed button: ");
+      Serial.println(buttonNumber;)
+      // check the game if 0<=buttonNumber<4
+      checkGame(buttonNumber);
+    }
+    if(numberOfTimerInterrupts % 10 == 0)
+    {
+      // Speeds up the timer by 10% every 10th interrupt
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;
+      OCR1A = timerInterruptSpeed;
+    }
+  }
+  else // Game not running
+  {
+    if(buttonNumber == 3)
+    {
+      startTheGame();
+    }
+    // After 5 timer interrupts, show high score
+    if(numberOfTimerInterrupts == 5)
+    {
+      Serial.print("Now showing high score: ");
+      Serial.println(highScore);
+      showNumber(highScore);
+    }
+  }
+
+  buttonNumber = -1;
 }
 
 void initializeTimer(void)
