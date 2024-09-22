@@ -44,8 +44,6 @@ void loop()
 
 void initializeTimer(void)
 {
-  // This function zeroes the timer and sets it up to give interruptions periodically
-
   TCCR1A = 0; // Timers to 0
   TCCR1B = 0;
   TCNT1 = 0;
@@ -81,7 +79,7 @@ void checkGame(byte nbrOfButtonPush)
   }
 }
 
-void endGame() // Ends the game
+void endGame()
 {
   if(currentScore > highScore)
   {
