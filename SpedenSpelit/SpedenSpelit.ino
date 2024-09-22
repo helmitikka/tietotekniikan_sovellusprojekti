@@ -5,15 +5,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-// Use these 2 volatile variables for communicating between
-// loop() function and interrupt handlers
-volatile int buttonNumber = -1;           // for buttons interrupt handler
-volatile bool newTimerInterrupt = false;  // for timer interrupt handler
-int randomNumber; // 0,1,2,3 randomly
-volatile int currentScore = 0; // Current score = total number of correct presses
+volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
+volatile bool newTimerInterrupt = false;  // Generates a new random number when True
+int randomNumber;                         // Random number: 0,1,2,3
+volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
+volatile int highScore;
 
-int numberList[100];
+int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
 
 void setup()
 {
@@ -45,32 +44,22 @@ void loop()
 
 void initializeTimer(void)
 {
-	// see requirements for the function from SpedenSpelit.h
-  // Hmm nämä menee Arduinon Verifystä läpi mutta VS Code ilmeisesti ei ymmärrä:
-  // Timer asetukset
-  TCCR1A = 0;
+  // This function zeroes the timer and sets it up to give interruptions periodically
+
+  TCCR1A = 0; // Timers to 0
   TCCR1B = 0;
   TCNT1 = 0;
 
-  // Aseta vertailuarvo (OCR1A) 0.1 sekunnin välein
-  OCR1A = 1562;
+  OCR1A = 15624; // Timer interrupts set to 1 sec intervals
 
-  // Aseta CTC-tila ja prescaleri
-  TCCR1B |= (1 << WGM12);
-  TCCR1B |= (1 << CS12) | (1 << CS10);
+  TCCR1B |= (1 << WGM12); // CTC (Clear timer on Compare Match) enabled
+  TCCR1B |= (1 << CS12) | (1 << CS10); // Prescaler to 1024
 
-  // Ota käyttöön Timer1:n keskeytys
-  TIMSK1 |= (1 << OCIE1A);
+  TIMSK1 |= (1 << OCIE1A); // Timer1 interrupts are now enabled
 }
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  /*
-  Communicate to loop() that it's time to make new random number.
-  Increase timer interrupt rate after 10 interrupts.
-  */
-
-  newTimerInterrupt = true; // generates new number in loop
-  
+  newTimerInterrupt = true; // generates new number in loop  
 }
 
 
@@ -92,9 +81,12 @@ void checkGame(byte nbrOfButtonPush)
   }
 }
 
-void endGame() // Ends the game.
+void endGame() // Ends the game
 {
-
+  if(currentScore > highScore)
+  {
+    highScore = currentScore;
+  }
 }
 
 void initializeGame()
