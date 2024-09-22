@@ -16,13 +16,22 @@ void initButtonsAndButtonInterrupts(void) // Initializes all buttons
     }
 }
 
-ISR(PCINT0_vect) // got an interrupt
+ISR(PCINT0_vect) // got a button interrupt
 {
-  for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
+  // Allows button presses every 50 ms to get rid of button debounce
+  static unsigned long lastInterruptTimestamp = 0;
+  unsigned long thisInterruptTimestamp = millis();
+
+  if (thisInterruptTimestamp - lastInterruptTimestamp > 50) // over 50 ms since last interrupt
   {
-    if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
+    for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
-      buttonNumber = i; // buttonNumber will be 0-3
+      if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
+      {
+        buttonNumber = i; // buttonNumber will be 0-3
+      }
     }
+    lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
   }
+
 }
