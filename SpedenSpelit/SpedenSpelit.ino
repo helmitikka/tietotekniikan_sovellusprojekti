@@ -28,7 +28,7 @@ void loop()
   {
     endGame();
   }
-  
+
   if(buttonNumber>=0 && buttonNumber < 4)
   {
      // start the game if buttonNumber == 4
@@ -118,5 +118,6 @@ void startTheGame()
    gameRunning = true;
    buttonNumber = -1;
    missedPresses = 0;
+   newTimerInterrupt = true
 }
 
