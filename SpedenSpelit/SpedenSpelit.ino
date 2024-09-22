@@ -21,10 +21,10 @@ int numberList[100];  // List of generated random numbers 0,1,2,3. This will be 
 void setup()
 {
   Serial.begin(9600); // Serial for testing purposes
-  initializeLeds();
-  initializeDisplay();
   initButtonsAndButtonInterrupts();
   initializeTimer();
+  initializeLeds();
+  initializeDisplay();
   interrupts();  
 }
 
