@@ -11,6 +11,7 @@ int randomNumber;                         // Random number: 0,1,2,3
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
 volatile int highScore;
+int missedPresses;                        // Ends the game if reaches 5
 
 int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
 
@@ -23,6 +24,11 @@ void setup()
 
 void loop()
 {
+  if(missedPresses > 4)
+  {
+    endGame();
+  }
+  
   if(buttonNumber>=0 && buttonNumber < 4)
   {
      // start the game if buttonNumber == 4
@@ -30,7 +36,7 @@ void loop()
      {
       startTheGame();
      }
-     
+
      // check the game if 0<=buttonNumber<4
      checkGame(buttonNumber);
   }
@@ -43,6 +49,7 @@ void loop()
      randomNumber = random(0, 4); // 0,1,2,3
      setLed(randomNumber);
      numberList[currentScore] = randomNumber;
+     missedPresses++;
      newTimerInterrupt = false;
   }
 }
@@ -62,7 +69,11 @@ void initializeTimer(void)
 }
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  newTimerInterrupt = true; // generates new random number in loop
+  if(gameRunning)
+  {
+    newTimerInterrupt = true; // generates new random number in loop
+  }
+  
 }
 
 
@@ -72,6 +83,7 @@ void checkGame(byte nbrOfButtonPush)
   if(nbrOfButtonPush == numberList[currentScore])
   {
     // User pressed correctly
+    missedPresses--;
     currentScore++;
     showNumber(currentScore);
 
@@ -104,7 +116,7 @@ void startTheGame()
 
    currentScore = 0;
    gameRunning = true;
-   newTimerInterrupt = true;
    buttonNumber = -1;
+   missedPresses = 0;
 }
 
