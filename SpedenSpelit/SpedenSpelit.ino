@@ -84,13 +84,19 @@ ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
       OCR1A = timerInterruptSpeed;
     }
   }
-  
+  else // Game not running
+  {
+    // After 5 interrupts, show high score
+    if(numberOfTimerInterrupts == 5)
+    {
+      showNumber(highScore);
+    }
+  }
 }
 
 
 void checkGame(byte nbrOfButtonPush)
 {
-	// see requirements for the function from SpedenSpelit.h
   if(nbrOfButtonPush == numberList[currentScore])
   {
     // User pressed correctly
@@ -109,10 +115,19 @@ void checkGame(byte nbrOfButtonPush)
 
 void endGame()
 {
+  gameRunning = false;
+  newTimerInterrupt = false; // No more new random numbers generated
+
   if(currentScore > highScore)
   {
     highScore = currentScore;
   }
+  /*
+    Reset the timer interrupt amount here
+    We can then easily compare for example if the amount is 5
+    -> 5 seconds has passed -> show high score
+  */
+  numberOfTimerInterrupts = 0;
 }
 
 void initializeGame()
