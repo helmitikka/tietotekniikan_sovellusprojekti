@@ -13,8 +13,8 @@ volatile bool gameRunning = false;
 volatile int highScore;
 int missedPresses;                        // Ends the game if reaches 5
 
-volatile int numberOfTimerInterrupts = 0;
-volatile int timerInterruptSpeed = 15624;
+volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
+volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
 
 int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
 
