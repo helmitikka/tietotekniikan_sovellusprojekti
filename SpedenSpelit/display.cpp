@@ -4,6 +4,7 @@ int latchPin = 7;  // to RCLK
 int clockPin = 12; // to SRCLK
 int dataPin = 13;  // to SER
 
+// Binary number data from Arduino to SER pin in register
 byte numbers[] = {
   0b00111111, // 0
   0b00000110, // 1
@@ -24,10 +25,10 @@ void initializeDisplay(void)
     pinMode(dataPin, OUTPUT);
 }
 
-void showNumber(int num) // Shows the given number on two 7 segment displays
+void showNumber(int num)
 {
-  int tens = num / 10;   // Get the tens digit
-  int ones = num % 10;   // Get the ones digit
+  int tens = num / 10;   // Tens digit
+  int ones = num % 10;   // Ones digit
 
   digitalWrite(latchPin, LOW); // Latch down -> ready to receive new numbers
 
