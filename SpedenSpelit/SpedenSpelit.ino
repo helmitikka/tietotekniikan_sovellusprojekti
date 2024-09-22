@@ -58,7 +58,7 @@ void loop()
     if(buttonNumber>=0 && buttonNumber < 4)
     {
       Serial.print("Pressed button: ");
-      Serial.println(buttonNumber;)
+      Serial.println(buttonNumber);
       // check the game if 0<=buttonNumber<4
       checkGame(buttonNumber);
     }
