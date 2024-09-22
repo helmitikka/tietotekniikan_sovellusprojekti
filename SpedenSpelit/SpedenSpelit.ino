@@ -10,8 +10,8 @@ volatile bool newTimerInterrupt = false;  // Generates a new random number when 
 int randomNumber;                         // Random number: 0,1,2,3
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
-volatile int highScore;
-int missedPresses;                        // Ends the game if reaches 5
+volatile int highScore = 0;
+int missedPresses = 0;                        // Ends the game if reaches 5
 
 volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
@@ -20,22 +20,26 @@ int numberList[100];  // List of generated random numbers 0,1,2,3. This will be 
 
 void setup()
 {
+  Serial.begin(9600); // Serial for testing purposes
   initializeLeds();
   initializeDisplay();
   initButtonsAndButtonInterrupts();
+  initializeTimer();
+  interrupts();  
 }
 
 void loop()
 {
   if(missedPresses > 4)
   {
+    Serial.println("Too many missed presses");
     endGame();
   }
 
   // start the game if buttonNumber == 4
-  if(buttonNumber == 4 && gameRunning == false)
+  if(buttonNumber == 3 && gameRunning == false)
   {
-  startTheGame();
+    startTheGame();
   }
 
   if(gameRunning)
@@ -57,20 +61,25 @@ void loop()
     // After 5 interrupts, show high score
     if(numberOfTimerInterrupts == 5)
     {
+      Serial.print("Now showing high score: ");
+      Serial.println(highScore);
       showNumber(highScore);
     }
   }
 
   if(newTimerInterrupt == true)
   {
+    newTimerInterrupt = false;
      // new random number must be generated
      // and corresponding led must be activated
      // add random number to number list for comparing
      randomNumber = random(0, 4); // 0,1,2,3
+     Serial.print("New random number: ");
+     Serial.println(randomNumber);
      setLed(randomNumber);
      numberList[currentScore] = randomNumber;
      missedPresses++;
-     newTimerInterrupt = false;
+     
   }
 }
 
@@ -104,6 +113,8 @@ void checkGame(byte nbrOfButtonPush)
     // User pressed correctly
     missedPresses--;
     currentScore++;
+    Serial.print("Pressed correctly. Score is now: ");
+    Serial.println(currentScore);
     showNumber(currentScore);
 
     buttonNumber = -1;
@@ -111,14 +122,18 @@ void checkGame(byte nbrOfButtonPush)
   }
   else
   {
+    Serial.println("Pressed wrongly");
     endGame();
   }
 }
 
 void endGame()
 {
+  Serial.println("GAME OVER");
   gameRunning = false;
+  missedPresses = 0;
   newTimerInterrupt = false; // No more new random numbers generated
+  clearAllLeds();
 
   if(currentScore > highScore)
   {
@@ -141,7 +156,7 @@ void initializeGame()
 void startTheGame()
 {
    // see requirements for the function from SpedenSpelit.h
-
+  Serial.println("Starting a new game");
    currentScore = 0;
    showNumber(currentScore);
    gameRunning = true;

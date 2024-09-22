@@ -4,8 +4,11 @@ const int ledPins[] = {2,3,4,5}; // Pins for LEDs (D2,D3,D4,D5)
 
 void initializeLeds()
 { 
+    Serial.println("Ititializing leds");
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
+        Serial.print("LED pin: ");
+        Serial.println(ledPins[i]);
         pinMode(ledPins[i], OUTPUT);
     }
 }
