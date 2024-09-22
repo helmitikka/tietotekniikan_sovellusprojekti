@@ -26,6 +26,11 @@ void loop()
   if(buttonNumber>=0 && buttonNumber < 4)
   {
      // start the game if buttonNumber == 4
+     if(buttonNumber == 4 && gameRunning == false)
+     {
+      startTheGame();
+     }
+     
      // check the game if 0<=buttonNumber<4
      checkGame(buttonNumber);
   }
@@ -57,7 +62,7 @@ void initializeTimer(void)
 }
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  newTimerInterrupt = true; // generates new number in loop  
+  newTimerInterrupt = true; // generates new random number in loop
 }
 
 
