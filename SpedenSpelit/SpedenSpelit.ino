@@ -13,6 +13,9 @@ volatile bool gameRunning = false;
 volatile int highScore;
 int missedPresses;                        // Ends the game if reaches 5
 
+volatile int numberOfTimerInterrupts = 0;
+volatile int timerInterruptSpeed = 15624;
+
 int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
 
 void setup()
@@ -60,7 +63,7 @@ void initializeTimer(void)
   TCCR1B = 0;
   TCNT1 = 0;
 
-  OCR1A = 15624; // Timer interrupts set to 1 sec intervals
+  OCR1A = timerInterruptSpeed; // Timer interrupts set to 1 sec intervals
 
   TCCR1B |= (1 << WGM12); // CTC (Clear timer on Compare Match) enabled
   TCCR1B |= (1 << CS12) | (1 << CS10); // Prescaler to 1024
@@ -71,7 +74,15 @@ ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
   if(gameRunning)
   {
+    numberOfTimerInterrupts++;
     newTimerInterrupt = true; // generates new random number in loop
+
+    if(numberOfTimerInterrupts % 10 == 0)
+    {
+      // Speeds up the timer by 10% every 10th interrupt
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;
+      OCR1A = timerInterruptSpeed;
+    }
   }
   
 }
@@ -118,6 +129,7 @@ void startTheGame()
    gameRunning = true;
    buttonNumber = -1;
    missedPresses = 0;
-   newTimerInterrupt = true
+   newTimerInterrupt = true;
+   numberOfTimerInterrupts = 0;
 }
 
