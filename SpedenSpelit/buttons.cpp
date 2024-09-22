@@ -22,8 +22,6 @@ ISR(PCINT0_vect) // got an interrupt
   {
     if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
     {
-      Serial.print("Pressed button: ");
-      Serial.println(i);
       buttonNumber = i; // buttonNumber will be 0-3
     }
   }

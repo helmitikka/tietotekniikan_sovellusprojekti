@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
+volatile int buttonNumber = 4;           // Which button was pressed by the player 0,1,2,3
 volatile bool newTimerInterrupt = false;  // Generates a new random number when True
 int randomNumber;                         // Random number: 0,1,2,3
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
@@ -36,7 +36,7 @@ void loop()
     endGame();
   }
 
-  // start the game if buttonNumber == 4
+  // start the game if buttonNumber == 3
   if(buttonNumber == 3 && gameRunning == false)
   {
     startTheGame();
