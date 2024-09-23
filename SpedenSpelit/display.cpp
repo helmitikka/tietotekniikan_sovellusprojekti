@@ -24,6 +24,7 @@ void initializeDisplay(void)
     pinMode(latchPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(dataPin, OUTPUT);
+    showNumber(0);
 }
 
 void showNumber(int num)
