@@ -4,6 +4,8 @@ int latchPin = 7;  // to RCLK
 int clockPin = 12; // to SRCLK
 int dataPin = 13;  // to SER
 
+// Sources: https://docs.arduino.cc/tutorials/communication/guide-to-shift-out/
+
 // Binary number data from Arduino to SER pin in register
 byte numbers[] = {
   0b00111111, // 0
