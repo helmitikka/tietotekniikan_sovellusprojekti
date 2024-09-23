@@ -18,6 +18,9 @@ volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1
 
 int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
 
+volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
+volatile bool timerIncreaseAllowed = false;  // after 10 timer interrupts, decreace the time between presses
+
 void setup()
 {
   Serial.begin(9600); // Serial for testing purposes
@@ -42,6 +45,8 @@ void loop()
      setLed(randomNumber);
      numberList[currentScore] = randomNumber;
      missedPresses++;
+      delay(100);
+      clearAllLeds();
      
   }
   
@@ -62,11 +67,17 @@ void loop()
       // check the game if 0<=buttonNumber<4
       checkGame(buttonNumber);
     }
-    if(numberOfTimerInterrupts % 10 == 0)
+    if(numberOfTimerInterrupts % 10 == 0 && timerIncreaseAllowed)
     {
+      timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
       // Speeds up the timer by 10% every 10th interrupt
       timerInterruptSpeed = timerInterruptSpeed * 0.9;
       OCR1A = timerInterruptSpeed;
+    }
+    if(numberOfTimerInterrupts % 10 == 1)
+    {
+      // We are at 11th interrupt -> allow to increase again at the next full 10
+      timerIncreaseAllowed = true;
     }
   }
   else // Game not running
@@ -76,8 +87,9 @@ void loop()
       startTheGame();
     }
     // After 5 timer interrupts, show high score
-    if(numberOfTimerInterrupts == 5)
+    if(numberOfTimerInterrupts == 5 && highScoreShowAllowed)
     {
+      highScoreShowAllowed = false;
       Serial.print("Now showing high score: ");
       Serial.println(highScore);
       showNumber(highScore);
@@ -149,6 +161,7 @@ void endGame()
     -> 5 seconds has passed -> show high score
   */
   numberOfTimerInterrupts = 0;
+  highScoreShowAllowed = true;
 }
 
 void initializeGame()
