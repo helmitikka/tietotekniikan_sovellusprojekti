@@ -11,6 +11,9 @@ void initializeLeds()
         Serial.println(ledPins[i]);
         pinMode(ledPins[i], OUTPUT);
     }
+    setAllLeds();
+    delay(100);
+    clearAllLeds();
 }
 
 void setLed(byte ledNumber)
