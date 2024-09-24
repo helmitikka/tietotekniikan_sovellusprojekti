@@ -22,6 +22,7 @@ int highScoreMemoryAddress = 0;           // EEPROM memory address where the hig
 volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
 
+volatile bool energySaveAllowed = true;
 volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
 volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
 
@@ -103,6 +104,13 @@ void loop()
       Serial.println(highScore);
       showNumber(highScore);
     }
+    if(numberOfTimerInterrupts == 10 && energySaveAllowed)
+    {
+      energySaveAllowed = false;
+      clearAllLeds();
+      shutDownDisplay();
+      Serial.println("mennään virransäästö");
+    }
   }
 
   buttonNumber = -1;
@@ -157,6 +165,7 @@ void endGame()
   Serial.println("GAME OVER");
   gameRunning = false;
   missedPresses = 0;
+  numberOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
 
   if(currentScore > highScore)
@@ -169,8 +178,8 @@ void endGame()
     We can then easily compare for example if the amount is 5
     -> 5 seconds has passed -> show high score
   */
-  numberOfTimerInterrupts = 0;
   highScoreShowAllowed = true;
+  energySaveAllowed = true;
   setAllLeds();
   delay(500);
   clearAllLeds();
@@ -183,6 +192,7 @@ void initializeGame()
   missedPresses = 0;
   numberOfTimerInterrupts = 0;
   currentScore = 0;
+  enableDisplay();
 }
 
 void startTheGame()
