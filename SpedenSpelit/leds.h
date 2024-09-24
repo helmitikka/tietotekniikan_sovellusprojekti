@@ -1,6 +1,6 @@
 #ifndef LEDS_H
 #define LEDS_H
-#include <arduino.h>
+#include <Arduino.h>
 
 extern volatile bool gameRunning;
 extern volatile int currentScore;
