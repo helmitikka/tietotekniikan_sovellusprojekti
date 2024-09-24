@@ -7,21 +7,23 @@
 #include <EEPROM.h>
 
 volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
+
 volatile bool newTimerInterrupt = false;  // Generates a new random number when True
 int randomNumber;                         // Random number: 0,1,2,3
+int numberList[100];                      // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
+
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
+int missedPresses = 0;                    // Ends the game if reaches 5
+
 volatile int highScore;
 int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
-int missedPresses = 0;                    // Ends the game if reaches 5
 
 volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
 
-int numberList[100];  // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
-
 volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
-volatile bool timerIncreaseAllowed = false;  // after 10 timer interrupts, decreace the time between presses
+volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
 
 void setup()
 {
