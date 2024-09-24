@@ -124,7 +124,7 @@ ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 
 void checkGame(byte nbrOfButtonPush)
 {
-  if(nbrOfButtonPush == numberList[currentScore + missedPresses])
+  if(nbrOfButtonPush == numberList[currentScore])
   {
     // User pressed correctly
     missedPresses--;
@@ -207,8 +207,8 @@ void writeHighScore(int score)
 void generateNewRandomNumber()
 {
     randomNumber = random(0, 4); // 0,1,2,3
-    missedPresses++;
     numberList[currentScore + missedPresses] = randomNumber;
+    missedPresses++;
 
     Serial.print("New random number: ");
     Serial.println(randomNumber);
