@@ -4,104 +4,222 @@
 #include "SpedenSpelit.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <EEPROM.h>
 
-// Use these 2 volatile variables for communicating between
-// loop() function and interrupt handlers
-volatile int buttonNumber = -1;           // for buttons interrupt handler
-volatile bool newTimerInterrupt = false;  // for timer interrupt handler
-int randomNumber; // 0,1,2,3 randomly
-volatile int currentScore = 0; // Current score = total number of correct presses
+volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
 
-int numberList[100];
+volatile bool newTimerInterrupt = false;  // Generates a new random number when True
+int randomNumber;                         // Random number: 0,1,2,3
+int numberList[100];                      // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
+
+volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
+volatile bool gameRunning = false;
+int missedPresses = 0;                    // Ends the game if reaches 5
+
+volatile int highScore;
+int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
+
+volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
+volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
+
+volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
+volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
+
+long ledBlinkStartTime = 0;
+bool ledIsBlinking = false;
 
 void setup()
 {
-  /*
-    Initialize here all modules
-  */
+  Serial.begin(9600); // Serial for testing purposes
+  initButtonsAndButtonInterrupts();
+  initializeTimer();
+  initializeLeds();
+  initializeHighScore();
+  initializeDisplay();  
+  interrupts();  
 }
 
 void loop()
 {
-  if(buttonNumber>=0 && buttonNumber < 4)
+  if(ledIsBlinking)
   {
-     // start the game if buttonNumber == 4
-     // check the game if 0<=buttonNumber<4
-     checkGame(buttonNumber);
+    long currentTime = millis();
+
+    if(currentTime - ledBlinkStartTime >= 200) // LED has been on for 200 ms -> turn off LED
+    {
+      clearAllLeds();
+    }
   }
 
   if(newTimerInterrupt == true)
   {
-     // new random number must be generated
-     // and corresponding led must be activated
-     // add random number to number list for comparing
-     randomNumber = random(0, 4); // 0,1,2,3
-     setLed(randomNumber);
-     numberList[currentScore] = randomNumber;
-     newTimerInterrupt = false;
+    newTimerInterrupt = false;
+    generateNewRandomNumber();
+    setLed(randomNumber);
+    ledIsBlinking = true;
+    ledBlinkStartTime = millis();
   }
+  
+  if(missedPresses > 6)
+  {
+    Serial.println("Too many missed presses");
+    endGame();
+  }
+
+  if(gameRunning)
+  {
+    if(buttonNumber>=0 && buttonNumber < 4)
+    {
+      Serial.print("Pressed button: ");
+      Serial.println(buttonNumber);
+      // check the game if 0<=buttonNumber<4
+      checkGame(buttonNumber);
+    }
+    if(numberOfTimerInterrupts % 10 == 0 && timerIncreaseAllowed)
+    {
+      timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
+      // Speeds up the timer by 10% every 10th interrupt
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;
+      OCR1A = timerInterruptSpeed;
+    }
+    if(numberOfTimerInterrupts % 10 == 1)
+    {
+      // We are at 11th interrupt -> allow to increase again at the next full 10
+      timerIncreaseAllowed = true;
+    }
+  }
+
+  else // Game not running
+  {
+    if(buttonNumber == 3)
+    {
+      startTheGame();
+    }
+    // After 5 timer interrupts, show high score
+    if(numberOfTimerInterrupts == 5 && highScoreShowAllowed)
+    {
+      highScoreShowAllowed = false;
+      Serial.print("Now showing high score: ");
+      Serial.println(highScore);
+      showNumber(highScore);
+    }
+  }
+
+  buttonNumber = -1;
 }
 
 void initializeTimer(void)
 {
-	// see requirements for the function from SpedenSpelit.h
-  // Hmm nämä menee Arduinon Verifystä läpi mutta VS Code ilmeisesti ei ymmärrä:
-  // Timer asetukset
-  TCCR1A = 0;
+  TCCR1A = 0; // Timers to 0
   TCCR1B = 0;
   TCNT1 = 0;
 
-  // Aseta vertailuarvo (OCR1A) 0.1 sekunnin välein
-  OCR1A = 1562;
+  OCR1A = timerInterruptSpeed; // Timer interrupts set to 1 sec intervals
 
-  // Aseta CTC-tila ja prescaleri
-  TCCR1B |= (1 << WGM12);
-  TCCR1B |= (1 << CS12) | (1 << CS10);
+  TCCR1B |= (1 << WGM12); // CTC (Clear timer on Compare Match) enabled
+  TCCR1B |= (1 << CS12) | (1 << CS10); // Prescaler to 1024
 
-  // Ota käyttöön Timer1:n keskeytys
-  TIMSK1 |= (1 << OCIE1A);
+  TIMSK1 |= (1 << OCIE1A); // Timer1 interrupts are now enabled
 }
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  /*
-  Communicate to loop() that it's time to make new random number.
-  Increase timer interrupt rate after 10 interrupts.
-  */
-
-  newTimerInterrupt = true; // generates new number in loop
-  
+  numberOfTimerInterrupts++;
+  if(gameRunning)
+  {
+    newTimerInterrupt = true; // generates new random number in loop
+  }
 }
 
 
 void checkGame(byte nbrOfButtonPush)
 {
-	// see requirements for the function from SpedenSpelit.h
   if(nbrOfButtonPush == numberList[currentScore])
   {
     // User pressed correctly
+    missedPresses--;
     currentScore++;
+    Serial.print("Pressed correctly. Score is now: ");
+    Serial.println(currentScore);
     showNumber(currentScore);
 
+    buttonNumber = -1;
     clearAllLeds();
   }
   else
   {
+    Serial.println("Pressed wrongly");
     endGame();
   }
 }
 
-void endGame() // Ends the game.
+void endGame()
 {
+  Serial.println("GAME OVER");
+  gameRunning = false;
+  missedPresses = 0;
+  newTimerInterrupt = false; // No more new random numbers generated
 
+  if(currentScore > highScore)
+  {
+    highScore = currentScore;
+    writeHighScore(highScore);
+  }
+  /*
+    Reset the timer interrupt amount here
+    We can then easily compare for example if the amount is 5
+    -> 5 seconds has passed -> show high score
+  */
+  numberOfTimerInterrupts = 0;
+  highScoreShowAllowed = true;
+  setAllLeds();
+  delay(500);
+  clearAllLeds();
 }
 
 void initializeGame()
 {
-	// see requirements for the function from SpedenSpelit.h
+  gameRunning = true;
+  buttonNumber = -1;
+  missedPresses = 0;
+  numberOfTimerInterrupts = 0;
+  currentScore = 0;
 }
 
 void startTheGame()
 {
-   // see requirements for the function from SpedenSpelit.h
+  Serial.println("Starting a new game");
+  initializeGame();
+  showNumber(currentScore);
 }
 
+void initializeHighScore()
+{
+  // Sources: https://docs.arduino.cc/learn/built-in-libraries/eeprom/
+  byte checkByte = EEPROM.read(highScoreMemoryAddress);
+  if(checkByte == 200)
+  {
+    // Reads the highScore from memory address + 1
+    highScore = EEPROM.read(highScoreMemoryAddress + 1);
+  }
+  else
+  {
+    highScore = 0;
+    writeHighScore(0);
+  }
+}
+
+void writeHighScore(int score)
+{
+  EEPROM.write(highScoreMemoryAddress, 200);
+  EEPROM.write(highScoreMemoryAddress + 1, highScore);
+}
+
+void generateNewRandomNumber()
+{
+    randomNumber = random(0, 4); // 0,1,2,3
+    numberList[currentScore + missedPresses] = randomNumber;
+    missedPresses++;
+
+    Serial.print("New random number: ");
+    Serial.println(randomNumber);
+}

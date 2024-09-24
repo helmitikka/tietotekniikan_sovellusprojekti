@@ -1,16 +1,14 @@
 #ifndef SPEDENSPELIT_H
 #define SPEDENSPELIT_H
-#include <arduino.h>
+#include <Arduino.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 /*
-  initializeTimer() subroutine intializes Arduino Timer1 module to
-  give interrupts at rate 1Hz
-  
+  This function zeroes the timer and sets it up to give interruptions periodically
 */
 void initializeTimer(void);
-// Intoduce TIMER1_COMPA_vect Interrupt SeRvice (ISR) function for timer.
+
 ISR(TIMER1_COMPA_vect);
 
 /*
@@ -42,6 +40,26 @@ void checkGame(byte);
   the Game.
 */
 void startTheGame(void);
+
+/*
+  Ends the game when the player pressed wrongly
+*/
+void endGame(void);
+
+/*
+  Reads the high score from EEPROM memory to variable highScore
+*/
+void initializeHighScore(void);
+
+/*
+  Reads the high score from EEPROM memory to variable highScore
+*/
+void setHighScore(int);
+
+/*
+  Generates a new random number, adds it to numberList, and increments missedPresses
+*/
+void generateNewRandomNumber(void);
 
 
 #endif

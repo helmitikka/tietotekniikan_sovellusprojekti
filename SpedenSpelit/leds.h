@@ -1,39 +1,32 @@
 #ifndef LEDS_H
 #define LEDS_H
-#include <arduino.h>
+#include <Arduino.h>
+
+extern volatile bool gameRunning;
+extern volatile int currentScore;
 
 /*
-  initializeLeds() subroutine intializes analog pins A2,A3,A4,A5
-  to be used as outputs. Speden Spelit leds are connected to those
-  pins.  
+  Initializes all LEDs in ledPins
 */
 void initializeLeds();
 
 /*
-  setLed(byte) sets correct led number given as 0,1,2 or 3
-  led number 0 corresponds to led connected at Arduino pin A2
-  led number 1 => Arduino pin A3
-  led number 2 => Arduino pin A4
-  led number 3 => Arduino pin A5
-  
-  parameters:
-  byte ledNumber is 0,1,2 or 3
+  Turns on a LED
 */
 void setLed(byte ledNumber);
 
 /*
-  clearAllLeds(void) subroutine clears all leds
+  Turns off all LEDs
 */
 void clearAllLeds(void);
 
 /*
-  setAllLeds subroutine sets all leds
+  Turns on all LEDs
 */
 void setAllLeds(void);
 
 /*
-  show1() subroutine shows numbers 0,1,...,15 as binary numbers
-  waits a bit and repeats number "show"
+  1-15 binary number show on LEDs
 */
 void show1(void);
 
