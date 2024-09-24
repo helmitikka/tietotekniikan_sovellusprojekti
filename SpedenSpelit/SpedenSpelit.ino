@@ -25,6 +25,9 @@ volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1
 volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
 volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
 
+long ledBlinkStartTime = 0;
+bool ledIsBlinking = false;
+
 void setup()
 {
   Serial.begin(9600); // Serial for testing purposes
@@ -38,6 +41,16 @@ void setup()
 
 void loop()
 {
+  if(ledIsBlinking)
+  {
+    long currentTime = millis();
+
+    if(currentTime - ledBlinkStartTime >= 100) // LED has been on for 100ms -> turn off LED
+    {
+      clearAllLeds();
+    }
+  }
+
   if(newTimerInterrupt == true)
   {
     newTimerInterrupt = false;
@@ -46,9 +59,8 @@ void loop()
     // add random number to number list for comparing
     generateNewRandomNumber();
     setLed(randomNumber);
-    delay(100);
-    clearAllLeds();
-     
+    ledIsBlinking = true;
+    ledBlinkStartTime = millis();
   }
   
   if(missedPresses > 4)
