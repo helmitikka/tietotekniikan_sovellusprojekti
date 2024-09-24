@@ -1,5 +1,3 @@
-# tietotekniikan_sovellusprojekti
-
 <!-- Readme:n muokkaukseen apuja: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes -->
 
 <!-- Badget osoitteesta: https://shields.io/badges -->
