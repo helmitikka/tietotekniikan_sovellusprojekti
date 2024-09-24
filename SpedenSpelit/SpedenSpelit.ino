@@ -170,7 +170,6 @@ void initializeGame()
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
-  newTimerInterrupt = true;
   numberOfTimerInterrupts = 0;
   currentScore = 0;
 }
