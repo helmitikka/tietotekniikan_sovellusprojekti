@@ -45,7 +45,7 @@ void loop()
   {
     long currentTime = millis();
 
-    if(currentTime - ledBlinkStartTime >= 100) // LED has been on for 100ms -> turn off LED
+    if(currentTime - ledBlinkStartTime >= 200) // LED has been on for 100ms -> turn off LED
     {
       clearAllLeds();
     }
@@ -161,7 +161,6 @@ void endGame()
   gameRunning = false;
   missedPresses = 0;
   newTimerInterrupt = false; // No more new random numbers generated
-  clearAllLeds();
 
   if(currentScore > highScore)
   {
@@ -175,6 +174,9 @@ void endGame()
   */
   numberOfTimerInterrupts = 0;
   highScoreShowAllowed = true;
+  setAllLeds();
+  delay(500);
+  clearAllLeds();
 }
 
 void initializeGame()
