@@ -45,7 +45,7 @@ void loop()
   {
     long currentTime = millis();
 
-    if(currentTime - ledBlinkStartTime >= 200) // LED has been on for 100ms -> turn off LED
+    if(currentTime - ledBlinkStartTime >= 200) // LED has been on for 200 ms -> turn off LED
     {
       clearAllLeds();
     }
@@ -63,7 +63,7 @@ void loop()
     ledBlinkStartTime = millis();
   }
   
-  if(missedPresses > 4)
+  if(missedPresses > 6)
   {
     Serial.println("Too many missed presses");
     endGame();
