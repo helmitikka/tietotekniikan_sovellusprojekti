@@ -41,17 +41,13 @@ void loop()
   if(newTimerInterrupt == true)
   {
     newTimerInterrupt = false;
-     // new random number must be generated
-     // and corresponding led must be activated
-     // add random number to number list for comparing
-     randomNumber = random(0, 4); // 0,1,2,3
-     Serial.print("New random number: ");
-     Serial.println(randomNumber);
-     setLed(randomNumber);
-     numberList[currentScore] = randomNumber;
-     missedPresses++;
-      delay(100);
-      clearAllLeds();
+    // new random number must be generated
+    // and corresponding led must be activated
+    // add random number to number list for comparing
+    generateNewRandomNumber();
+    setLed(randomNumber);
+    delay(100);
+    clearAllLeds();
      
   }
   
@@ -60,8 +56,6 @@ void loop()
     Serial.println("Too many missed presses");
     endGame();
   }
-
-
 
   if(gameRunning)
   {
@@ -85,6 +79,7 @@ void loop()
       timerIncreaseAllowed = true;
     }
   }
+  
   else // Game not running
   {
     if(buttonNumber == 3)
@@ -159,7 +154,7 @@ void endGame()
   if(currentScore > highScore)
   {
     highScore = currentScore;
-    EEPROM.write(highScoreMemoryAddress, highScore);
+    writeHighScore(highScore);
   }
   /*
     Reset the timer interrupt amount here
@@ -192,5 +187,31 @@ void startTheGame()
 void initializeHighScore()
 {
   // Sources: https://docs.arduino.cc/learn/built-in-libraries/eeprom/
-  highScore = EEPROM.read(highScoreMemoryAddress);
+  byte checkByte = EEPROM.read(highScoreMemoryAddress);
+  if(checkByte == 200)
+  {
+    // Reads the highScore from memory address + 1
+    highScore = EEPROM.read(highScoreMemoryAddress + 1);
+  }
+  else
+  {
+    highScore = 0;
+    writeHighScore(0);
+  }
+}
+
+void writeHighScore(int score)
+{
+  EEPROM.write(highScoreMemoryAddress, 200);
+  EEPROM.write(highScoreMemoryAddress + 1, highScore);
+}
+
+void generateNewRandomNumber()
+{
+    randomNumber = random(0, 4); // 0,1,2,3
+    numberList[currentScore] = randomNumber;
+    missedPresses++;
+
+    Serial.print("New random number: ");
+    Serial.println(randomNumber);
 }

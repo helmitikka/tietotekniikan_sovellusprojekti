@@ -51,4 +51,15 @@ void endGame(void);
 */
 void initializeHighScore(void);
 
+/*
+  Reads the high score from EEPROM memory to variable highScore
+*/
+void setHighScore(int);
+
+/*
+  Generates a new random number, adds it to numberList, and increments missedPresses
+*/
+void generateNewRandomNumber(void);
+
+
 #endif
