@@ -54,9 +54,6 @@ void loop()
   if(newTimerInterrupt == true)
   {
     newTimerInterrupt = false;
-    // new random number must be generated
-    // and corresponding led must be activated
-    // add random number to number list for comparing
     generateNewRandomNumber();
     setLed(randomNumber);
     ledIsBlinking = true;
