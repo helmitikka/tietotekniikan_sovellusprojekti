@@ -79,7 +79,7 @@ void loop()
       timerIncreaseAllowed = true;
     }
   }
-  
+
   else // Game not running
   {
     if(buttonNumber == 3)
@@ -209,8 +209,8 @@ void writeHighScore(int score)
 void generateNewRandomNumber()
 {
     randomNumber = random(0, 4); // 0,1,2,3
-    numberList[currentScore] = randomNumber;
     missedPresses++;
+    numberList[currentScore + missedPresses] = randomNumber;    
 
     Serial.print("New random number: ");
     Serial.println(randomNumber);
