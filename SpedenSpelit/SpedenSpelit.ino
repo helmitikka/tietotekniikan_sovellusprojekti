@@ -167,21 +167,19 @@ void endGame()
 
 void initializeGame()
 {
-	
-
-}
-
-void startTheGame()
-{
-   // see requirements for the function from SpedenSpelit.h
-  Serial.println("Starting a new game");
-  currentScore = 0;
-  showNumber(currentScore);
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
   newTimerInterrupt = true;
   numberOfTimerInterrupts = 0;
+  currentScore = 0;
+}
+
+void startTheGame()
+{
+  Serial.println("Starting a new game");
+  initializeGame();
+  showNumber(currentScore);
 }
 
 void initializeHighScore()
