@@ -46,4 +46,9 @@ void startTheGame(void);
 */
 void endGame(void);
 
+/*
+  Reads the high score from EEPROM memory to variable highScore
+*/
+void initializeHighScore(void);
+
 #endif

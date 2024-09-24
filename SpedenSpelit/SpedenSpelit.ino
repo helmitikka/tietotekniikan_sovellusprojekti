@@ -4,14 +4,16 @@
 #include "SpedenSpelit.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <EEPROM.h>
 
 volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
 volatile bool newTimerInterrupt = false;  // Generates a new random number when True
 int randomNumber;                         // Random number: 0,1,2,3
 volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
-volatile int highScore = 0;
-int missedPresses = 0;                        // Ends the game if reaches 5
+volatile int highScore;
+int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
+int missedPresses = 0;                    // Ends the game if reaches 5
 
 volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
@@ -27,7 +29,8 @@ void setup()
   initButtonsAndButtonInterrupts();
   initializeTimer();
   initializeLeds();
-  initializeDisplay();
+  initializeHighScore();
+  initializeDisplay();  
   interrupts();  
 }
 
@@ -154,6 +157,7 @@ void endGame()
   if(currentScore > highScore)
   {
     highScore = currentScore;
+    EEPROM.write(highScoreMemoryAddress, highScore);
   }
   /*
     Reset the timer interrupt amount here
@@ -174,12 +178,17 @@ void startTheGame()
 {
    // see requirements for the function from SpedenSpelit.h
   Serial.println("Starting a new game");
-   currentScore = 0;
-   showNumber(currentScore);
-   gameRunning = true;
-   buttonNumber = -1;
-   missedPresses = 0;
-   newTimerInterrupt = true;
-   numberOfTimerInterrupts = 0;
+  currentScore = 0;
+  showNumber(currentScore);
+  gameRunning = true;
+  buttonNumber = -1;
+  missedPresses = 0;
+  newTimerInterrupt = true;
+  numberOfTimerInterrupts = 0;
 }
 
+void initializeHighScore()
+{
+  // Sources: https://docs.arduino.cc/learn/built-in-libraries/eeprom/
+  highScore = EEPROM.read(highScoreMemoryAddress);
+}
