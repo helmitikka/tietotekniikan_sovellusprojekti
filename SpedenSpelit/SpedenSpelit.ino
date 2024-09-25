@@ -75,6 +75,7 @@ void loop()
       Serial.println(buttonNumber);
       // check the game if 0<=buttonNumber<4
       checkGame(buttonNumber);
+      buttonNumber = -1;
     }
     if(numberOfTimerInterrupts % 10 == 0 && timerIncreaseAllowed)
     {
@@ -113,7 +114,7 @@ void loop()
     }
   }
 
-  buttonNumber = -1;
+  
 }
 
 void initializeTimer(void)
@@ -150,7 +151,6 @@ void checkGame(byte nbrOfButtonPush)
     Serial.println(currentScore);
     showNumber(currentScore);
 
-    buttonNumber = -1;
     clearAllLeds();
   }
   else
