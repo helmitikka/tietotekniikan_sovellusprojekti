@@ -25,7 +25,7 @@ ISR(PCINT0_vect) // got a button interrupt
 
   unsigned long thisInterruptTimestamp = millis();
 
-  if (thisInterruptTimestamp - lastInterruptTimestamp > 25) // over 50 ms since last interrupt
+  if (thisInterruptTimestamp - lastInterruptTimestamp > 150) // over 50 ms since last interrupt
   {
     for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
