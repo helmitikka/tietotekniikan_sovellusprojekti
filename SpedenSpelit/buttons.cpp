@@ -31,9 +31,11 @@ ISR(PCINT0_vect) // got a button interrupt
       if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
       {
         buttonNumber = i; // buttonNumber will be 0-3
+        lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
+        break;
       }
     }
-    lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
+    
   }
 
 }
