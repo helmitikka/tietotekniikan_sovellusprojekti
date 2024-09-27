@@ -105,7 +105,7 @@ void loop()
       Serial.println(highScore);
       showNumber(highScore);
     }
-    if(numberOfTimerInterrupts == 10 && energySaveAllowed)
+    if(numberOfTimerInterrupts == 300 && energySaveAllowed)
     {
       energySaveAllowed = false;
       clearAllLeds();
