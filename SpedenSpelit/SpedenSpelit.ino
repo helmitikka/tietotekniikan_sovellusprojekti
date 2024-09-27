@@ -66,7 +66,7 @@ void loop()
     Serial.println("Too many missed presses");
     endGame();
   }
-
+  
   if(gameRunning)
   {
     if(buttonNumber>=0 && buttonNumber < 4)
@@ -77,7 +77,7 @@ void loop()
       checkGame(buttonNumber);
       buttonNumber = -1;
     }
-    if(numberOfTimerInterrupts % 10 == 0 && timerIncreaseAllowed)
+    if(numberOfTimerInterrupts % 10 == 0 && numberOfTimerInterrupts > 9 && timerIncreaseAllowed)
     {
       timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
       // Speeds up the timer by 10% every 10th interrupt
@@ -150,7 +150,6 @@ void checkGame(byte nbrOfButtonPush)
     Serial.print("Pressed correctly. Score is now: ");
     Serial.println(currentScore);
     showNumber(currentScore);
-
     clearAllLeds();
   }
   else
@@ -167,6 +166,7 @@ void endGame()
   missedPresses = 0;
   numberOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
+  timerInterruptSpeed = 15624;
 
   if(currentScore > highScore)
   {
