@@ -167,6 +167,7 @@ void endGame()
   numberOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
   timerInterruptSpeed = 15624;
+  OCR1A = timerInterruptSpeed;
 
   if(currentScore > highScore)
   {
@@ -187,6 +188,7 @@ void endGame()
 
 void initializeGame()
 {
+  initializeTimer();
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
