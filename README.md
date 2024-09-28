@@ -29,7 +29,7 @@ Peli alkaa, kun kahta reunimmaista nappia painetaan hetken ajan. Aluksi syttyy y
 Peli tallentaa suurimman saavutetun pistemäärän (High Score), joka näkyy 7-segmenttinäytöllä. Peli menee virransäästötilaan, jos sitä ei käytetä hetkeen, ja sen voi herättää painamalla jotain nappia.
 
 ![Havainnekuva laitteesta](/Dokumentit/Kuvat/Readme/havainnekuva.png)
-<img src="/Dokumentit/Kuvat/tuote-valokuva.jpg" alt="Valokuva valmiista laitteesta" title="Valokuva valmiista laitteesta" width="50%" height="50%">
+![Valokuva valmiista laitteesta](/Dokumentit/Kuvat/Readme/tuote-valokuva-pieni.jpg)
 
 ## Asennus
 
