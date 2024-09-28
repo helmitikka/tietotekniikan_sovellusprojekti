@@ -54,11 +54,10 @@ void loop()
 
   if(newTimerInterrupt == true)
   {
+    clearAllLeds();
     newTimerInterrupt = false;
     generateNewRandomNumber();
     setLed(randomNumber);
-    ledIsBlinking = true;
-    ledBlinkStartTime = millis();
   }
   
   if(missedPresses > 6)
