@@ -2,6 +2,8 @@
 
 const int buttonPins[] = {8, 9, 10, 11};
 
+static unsigned long lastInterruptTimestamp = 0;
+
 void initButtonsAndButtonInterrupts(void) // Initializes all buttons
 {
   PCICR |= (1 << PCIE0);  // Enable pin change interrupt for PCINT0
@@ -21,19 +23,18 @@ ISR(PCINT0_vect) // got a button interrupt
   // Sources: https://docs.arduino.cc/built-in-examples/digital/Debounce/
   // Allows button presses every 50 ms to get rid of button debounce
 
-  static unsigned long lastInterruptTimestamp = 0;
   unsigned long thisInterruptTimestamp = millis();
 
-  if (thisInterruptTimestamp - lastInterruptTimestamp > 50) // over 50 ms since last interrupt
+  if (thisInterruptTimestamp - lastInterruptTimestamp > 200) // over 50 ms since last interrupt
   {
     for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
       if (digitalRead(buttonPins[i]) == LOW) // checks if any pins in buttonPins is LOW
       {
         buttonNumber = i; // buttonNumber will be 0-3
+        lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
+        break;
       }
-    }
-    lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
+    }    
   }
-
 }

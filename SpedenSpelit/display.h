@@ -12,4 +12,8 @@ void initializeDisplay(void);
 */
 void showNumber(int num);
 
+void shutDownDisplay(void);
+
+void enableDisplay(void);
+
 #endif

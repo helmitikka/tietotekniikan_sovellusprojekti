@@ -22,6 +22,7 @@ int highScoreMemoryAddress = 0;           // EEPROM memory address where the hig
 volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
 
+volatile bool energySaveAllowed = true;
 volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
 volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
 
@@ -53,11 +54,10 @@ void loop()
 
   if(newTimerInterrupt == true)
   {
+    clearAllLeds();
     newTimerInterrupt = false;
     generateNewRandomNumber();
     setLed(randomNumber);
-    ledIsBlinking = true;
-    ledBlinkStartTime = millis();
   }
   
   if(missedPresses > 6)
@@ -65,7 +65,7 @@ void loop()
     Serial.println("Too many missed presses");
     endGame();
   }
-
+  
   if(gameRunning)
   {
     if(buttonNumber>=0 && buttonNumber < 4)
@@ -74,8 +74,9 @@ void loop()
       Serial.println(buttonNumber);
       // check the game if 0<=buttonNumber<4
       checkGame(buttonNumber);
+      buttonNumber = -1;
     }
-    if(numberOfTimerInterrupts % 10 == 0 && timerIncreaseAllowed)
+    if(numberOfTimerInterrupts % 10 == 0 && numberOfTimerInterrupts > 9 && timerIncreaseAllowed)
     {
       timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
       // Speeds up the timer by 10% every 10th interrupt
@@ -103,9 +104,16 @@ void loop()
       Serial.println(highScore);
       showNumber(highScore);
     }
+    if(numberOfTimerInterrupts == 300 && energySaveAllowed)
+    {
+      energySaveAllowed = false;
+      clearAllLeds();
+      shutDownDisplay();
+      Serial.println("mennään virransäästö");
+    }
   }
 
-  buttonNumber = -1;
+  
 }
 
 void initializeTimer(void)
@@ -141,8 +149,6 @@ void checkGame(byte nbrOfButtonPush)
     Serial.print("Pressed correctly. Score is now: ");
     Serial.println(currentScore);
     showNumber(currentScore);
-
-    buttonNumber = -1;
     clearAllLeds();
   }
   else
@@ -157,7 +163,10 @@ void endGame()
   Serial.println("GAME OVER");
   gameRunning = false;
   missedPresses = 0;
+  numberOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
+  timerInterruptSpeed = 15624;
+  OCR1A = timerInterruptSpeed;
 
   if(currentScore > highScore)
   {
@@ -169,8 +178,8 @@ void endGame()
     We can then easily compare for example if the amount is 5
     -> 5 seconds has passed -> show high score
   */
-  numberOfTimerInterrupts = 0;
   highScoreShowAllowed = true;
+  energySaveAllowed = true;
   setAllLeds();
   delay(500);
   clearAllLeds();
@@ -178,11 +187,13 @@ void endGame()
 
 void initializeGame()
 {
+  initializeTimer();
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
   numberOfTimerInterrupts = 0;
   currentScore = 0;
+  enableDisplay();
 }
 
 void startTheGame()

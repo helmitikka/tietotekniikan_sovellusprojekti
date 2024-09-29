@@ -3,6 +3,7 @@
 int latchPin = 7;  // to RCLK
 int clockPin = 12; // to SRCLK
 int dataPin = 13;  // to SER
+int shutDownPin = 6;
 
 // Sources: https://docs.arduino.cc/tutorials/communication/guide-to-shift-out/
 
@@ -26,6 +27,8 @@ void initializeDisplay(void)
     pinMode(latchPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(dataPin, OUTPUT);
+    pinMode(shutDownPin, OUTPUT);
+    enableDisplay();
     showNumber(0);
 }
 
@@ -40,4 +43,14 @@ void showNumber(int num)
   shiftOut(dataPin, clockPin, MSBFIRST, numbers[tens]); // Second 8 bits stays on the 1st register
 
   digitalWrite(latchPin, HIGH); // Latch up -> Numbers shown
+}
+
+void shutDownDisplay(void)
+{
+  digitalWrite(shutDownPin, HIGH);
+}
+
+void enableDisplay(void)
+{
+  digitalWrite(shutDownPin, LOW);
 }
