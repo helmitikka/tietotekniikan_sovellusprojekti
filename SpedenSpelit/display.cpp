@@ -1,9 +1,9 @@
 #include "display.h"
 
-int latchPin = 7;  // to RCLK
-int clockPin = 12; // to SRCLK
-int dataPin = 13;  // to SER
-int shutDownPin = 6;
+int latchPin = 7;     // to RCLK
+int clockPin = 12;    // to SRCLK
+int dataPin = 13;     // to SER
+int shutDownPin = 6;  // to OE
 
 // Sources: https://docs.arduino.cc/tutorials/communication/guide-to-shift-out/
 

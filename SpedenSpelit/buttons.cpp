@@ -1,10 +1,9 @@
 #include "buttons.h"
 
 const int buttonPins[] = {8, 9, 10, 11};
-
 static unsigned long lastInterruptTimestamp = 0;
 
-void initButtonsAndButtonInterrupts(void) // Initializes all buttons
+void initButtonsAndButtonInterrupts(void)
 {
   PCICR |= (1 << PCIE0);  // Enable pin change interrupt for PCINT0
   PCMSK0 |= (1 << PCINT0) | (1 << PCINT1) | (1 << PCINT2) | (1 << PCINT3);  // Enable interrupts for pins 8, 9, 10, 11

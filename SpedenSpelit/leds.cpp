@@ -37,7 +37,6 @@ void setAllLeds()
     }
 }
 
-
 void show1()
 {
     while(gameRunning == false && currentScore == 0)
