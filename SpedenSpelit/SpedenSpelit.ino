@@ -12,24 +12,23 @@ volatile bool newTimerInterrupt = false;  // When True, a new random number will
 int randomNumber;                         // Random number | Can get values: 0,1,2,3
 int numberList[100];                      // List of generated random numbers in current game. | Example values: [0,1,2,3]
 
-int currentScore = 0;            // Current score. Also equals to total number of correct presses
+int currentScore = 0;                     // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
 int missedPressesAllowed = 5;             // Ends the game if this amount of missed presses is reached
 int missedPresses = 0;                    // Running amount of missed presses by the player
 
-int highScore;
-int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
-
 volatile int countOfTimerInterrupts = 0;  // Increased on every timer interrupt. Used as running count of how long the game has been running / idling
-int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1 Hz)
+int timerInterruptSpeed = 15624;          // Timer interrupt interval (15624 = 1 Hz)
 
-bool energySaveAllowed = true;     // Allowed to enter Energy saving mode
+bool energySaveAllowed = true;            // Allowed to enter Energy saving mode
 int energySaveAfterSeconds = 300;
 
-bool highScoreShowAllowed = true;  // Allowed to show High Scores while the game is idling
+int highScore;
+int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
+bool highScoreShowAllowed = true;         // Allowed to show High Scores while the game is idling
 int highScoreShowAfterSeconds = 5;
 
-bool timerIncreaseAllowed = false; // After every 10 timer interrupts, decrease the time between presses (makes the game harder)
+bool timerIncreaseAllowed = false;        // After every 10 timer interrupts, decrease the time between presses (makes the game harder)
 
 
 void setup()
