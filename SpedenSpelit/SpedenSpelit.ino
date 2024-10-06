@@ -19,7 +19,7 @@ int missedPresses = 0;                    // Ends the game if reaches 5
 volatile int highScore;
 int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
 
-volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
+volatile int countOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
 volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
 
 volatile bool energySaveAllowed = true;
@@ -76,14 +76,14 @@ void loop()
       checkGame(buttonNumber);
       buttonNumber = -1;
     }
-    if(numberOfTimerInterrupts % 10 == 0 && numberOfTimerInterrupts > 9 && timerIncreaseAllowed)
+    if(countOfTimerInterrupts % 10 == 0 && countOfTimerInterrupts > 9 && timerIncreaseAllowed)
     {
       timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
       // Speeds up the timer by 10% every 10th interrupt
       timerInterruptSpeed = timerInterruptSpeed * 0.9;
       OCR1A = timerInterruptSpeed;
     }
-    if(numberOfTimerInterrupts % 10 == 1)
+    if(countOfTimerInterrupts % 10 == 1)
     {
       // We are at 11th interrupt -> allow to increase again at the next full 10
       timerIncreaseAllowed = true;
@@ -97,14 +97,14 @@ void loop()
       startTheGame();
     }
     // After 5 timer interrupts, show high score
-    if(numberOfTimerInterrupts == 5 && highScoreShowAllowed)
+    if(countOfTimerInterrupts == 5 && highScoreShowAllowed)
     {
       highScoreShowAllowed = false;
       Serial.print("Now showing high score: ");
       Serial.println(highScore);
       showNumber(highScore);
     }
-    if(numberOfTimerInterrupts == 300 && energySaveAllowed)
+    if(countOfTimerInterrupts == 300 && energySaveAllowed)
     {
       energySaveAllowed = false;
       clearAllLeds();
@@ -131,7 +131,7 @@ void initializeTimer(void)
 }
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  numberOfTimerInterrupts++;
+  countOfTimerInterrupts++;
   if(gameRunning)
   {
     newTimerInterrupt = true; // generates new random number in loop
@@ -163,7 +163,7 @@ void endGame()
   Serial.println("GAME OVER");
   gameRunning = false;
   missedPresses = 0;
-  numberOfTimerInterrupts = 0;
+  countOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
   timerInterruptSpeed = 15624;
   OCR1A = timerInterruptSpeed;
@@ -191,7 +191,7 @@ void initializeGame()
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
-  numberOfTimerInterrupts = 0;
+  countOfTimerInterrupts = 0;
   currentScore = 0;
   enableDisplay();
 }
