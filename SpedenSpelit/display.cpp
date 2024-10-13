@@ -23,7 +23,6 @@ byte numbers[] = {
 
 void initializeDisplay(void)
 {
-    Serial.println("Ititializing displays");
     pinMode(latchPin, OUTPUT);
     pinMode(clockPin, OUTPUT);
     pinMode(dataPin, OUTPUT);

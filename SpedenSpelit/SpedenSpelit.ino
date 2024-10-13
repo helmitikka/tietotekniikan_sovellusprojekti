@@ -52,7 +52,6 @@ void loop()
   
   if(missedPresses > 6)
   {
-    Serial.println("Too many missed presses");
     endGame();
   }
   
@@ -60,23 +59,18 @@ void loop()
   {
     if(buttonNumber>=0 && buttonNumber < 4)
     {
-      Serial.print("Pressed button: ");
-      Serial.println(buttonNumber);
-      // check the game if 0<=buttonNumber<4
-      checkGame(buttonNumber);
+      checkGame(buttonNumber);  // check the game if 0<=buttonNumber<4
       buttonNumber = -1;
     }
     if(numberOfTimerInterrupts % 10 == 0 && numberOfTimerInterrupts > 9 && timerIncreaseAllowed)
     {
       timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
-      // Speeds up the timer by 10% every 10th interrupt
-      timerInterruptSpeed = timerInterruptSpeed * 0.9;
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;  // Speeds up the timer by 10% every 10th interrupt
       OCR1A = timerInterruptSpeed;
     }
     if(numberOfTimerInterrupts % 10 == 1)
     {
-      // We are at 11th interrupt -> allow to increase again at the next full 10
-      timerIncreaseAllowed = true;
+      timerIncreaseAllowed = true;  // We are at 11th interrupt -> allow to increase again at the next full 10
     }
   }
 
@@ -92,24 +86,21 @@ void loop()
     if(numberOfTimerInterrupts == 5 && highScoreShowAllowed)
     {
       highScoreShowAllowed = false;
-      Serial.print("Now showing high score: ");
-      Serial.println(highScore);
       showNumber(highScore);
     }
-    while(numberOfTimerInterrupts == 10 && energySaveAllowed)
+    while(numberOfTimerInterrupts == 300 && energySaveAllowed)
     {
       energySaveAllowed = false;
       ledIsBlinking = true;
       clearAllLeds();
       shutDownDisplay();
-      Serial.println("mennään virransäästö");
-        while(ledIsBlinking)
+        while(ledIsBlinking)  // Blinks led when energy save is on
         {
           setLed(3);
           delay(100);
           clearAllLeds();
           delay(1000);
-          if(buttonNumber > -1 && buttonNumber <= 2)
+          if(buttonNumber > -1 && buttonNumber <= 2)  // Brings back highscore when any button is pressed
           {
             buttonNumber = -1;
             ledIsBlinking = false;
@@ -159,22 +150,17 @@ void checkGame(byte nbrOfButtonPush)
     // User pressed correctly
     missedPresses--;
     currentScore++;
-    Serial.print("Pressed correctly. Score is now: ");
-    Serial.println(currentScore);
-    Serial.println(timerInterruptSpeed);
     showNumber(currentScore);
     clearAllLeds();
   }
   else
   {
-    Serial.println("Pressed wrongly");
     endGame();
   }
 }
 
 void endGame()
 {
-  Serial.println("GAME OVER");
   gameRunning = false;
   missedPresses = 0;
   numberOfTimerInterrupts = 0;
@@ -213,7 +199,6 @@ void initializeGame()
 
 void startTheGame()
 {
-  Serial.println("Starting a new game");
   initializeGame();
   showNumber(currentScore);
 }
@@ -242,10 +227,7 @@ void writeHighScore(int score)
 
 void generateNewRandomNumber()
 {
-    randomNumber = random(0, 4); // 0,1,2,3
-    numberList[currentScore + missedPresses] = randomNumber;
-    missedPresses++;
-
-    Serial.print("New random number: ");
-    Serial.println(randomNumber);
+  randomNumber = random(0, 4); // 0,1,2,3
+  numberList[currentScore + missedPresses] = randomNumber;
+  missedPresses++;
 }
