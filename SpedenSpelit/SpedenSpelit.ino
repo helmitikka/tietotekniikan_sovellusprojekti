@@ -13,7 +13,7 @@ int randomNumber;                         // Random number | Can get values: 0,1
 int numberList[100];                      // List of generated random numbers in current game. | Example values: [0,1,2,3]
 
 int currentScore = 0;                     // Current score. Also equals to total number of correct presses
-volatile bool gameRunning = false;
+bool gameRunning = false;
 int missedPressesAllowed = 5;             // Ends the game if this amount of missed presses is reached
 int missedPresses = 0;                    // Running amount of missed presses by the player
 

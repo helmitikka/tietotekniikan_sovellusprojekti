@@ -2,7 +2,7 @@
 #define LEDS_H
 #include <Arduino.h>
 
-extern volatile bool gameRunning;
+extern bool gameRunning;
 extern volatile int currentScore;
 
 /*
