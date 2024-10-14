@@ -17,11 +17,11 @@ void initButtonsAndButtonInterrupts(void)
 ISR(PCINT0_vect) // got a button interrupt
 {
   // Sources: https://docs.arduino.cc/built-in-examples/digital/Debounce/
-  // Allows button presses every 50 ms to get rid of button debounce
+  // Allows button presses every 200 ms to get rid of button debounce
 
   unsigned long thisInterruptTimestamp = millis();
 
-  if (thisInterruptTimestamp - lastInterruptTimestamp > 200) // over 50 ms since last interrupt
+  if (thisInterruptTimestamp - lastInterruptTimestamp > 200) // over 200 ms since last interrupt
   {
     for (int i = 0; i < sizeof(buttonPins) / sizeof(buttonPins[0]); i++)
     {
@@ -31,6 +31,6 @@ ISR(PCINT0_vect) // got a button interrupt
         lastInterruptTimestamp = thisInterruptTimestamp; // Updates the timestamp to be current interrupt time
         break;
       }
-    }    
+    }
   }
 }
