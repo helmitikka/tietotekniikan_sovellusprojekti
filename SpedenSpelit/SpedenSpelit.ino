@@ -228,7 +228,14 @@ void writeHighScore(int score)
 
 void generateNewRandomNumber()
 {
+  if(currentScore < 100)
+  {
     randomNumber = random(0, 4); // 0,1,2,3
     numberList[currentScore + missedPresses] = randomNumber;
     missedPresses++;
+  }
+  else
+  {
+    endGame();
+  }
 }
