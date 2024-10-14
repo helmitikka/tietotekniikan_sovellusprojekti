@@ -8,7 +8,7 @@
 
 volatile int buttonNumber = -1;           // Which button was pressed by the player | Can get values: 0,1,2,3
 
-volatile bool newTimerInterrupt = false;  // When True, a new random number will be generated for the game
+volatile bool createNewRandomNumber = false;  // When True, a new random number will be generated for the game
 int randomNumber;                         // Random number | Can get values: 0,1,2,3
 int numberList[100];                      // List of generated random numbers in current game. | Example values: [0,1,2,3]
 
@@ -43,9 +43,9 @@ void setup()
 
 void loop()
 {
-  if(newTimerInterrupt == true)
+  if(createNewRandomNumber == true)
   {
-    newTimerInterrupt = false;
+    createNewRandomNumber = false;
     clearAllLeds();
     generateNewRandomNumber();
     setLed(randomNumber);
@@ -144,7 +144,7 @@ ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
   countOfTimerInterrupts++;
   if(gameRunning)
   {
-    newTimerInterrupt = true; // generates new random number in loop
+    createNewRandomNumber = true; // generates new random number in loop
   }
 }
 
@@ -170,7 +170,7 @@ void endGame()
   gameRunning = false;
   missedPresses = 0;
   countOfTimerInterrupts = 0;
-  newTimerInterrupt = false; // No more new random numbers generated
+  createNewRandomNumber = false; // No more new random numbers generated
   timerInterruptSpeed = 15624;
   OCR1A = timerInterruptSpeed;
   highScoreShowAllowed = true;
