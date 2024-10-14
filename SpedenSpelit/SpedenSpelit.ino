@@ -6,51 +6,52 @@
 #include <avr/interrupt.h>
 #include <EEPROM.h>
 
-volatile int buttonNumber = -1;           // Which button was pressed by the player 0,1,2,3
+volatile int buttonNumber = -1;           // Which button was pressed by the player | Can get values: 0,1,2,3
 
-volatile bool newTimerInterrupt = false;  // Generates a new random number when True
-int randomNumber;                         // Random number: 0,1,2,3
-int numberList[100];                      // List of generated random numbers 0,1,2,3. This will be compared to when the user presses a button
+volatile bool newTimerInterrupt = false;  // When True, a new random number will be generated for the game
+int randomNumber;                         // Random number | Can get values: 0,1,2,3
+int numberList[100];                      // List of generated random numbers in current game. | Example values: [0,1,2,3]
 
-volatile int currentScore = 0;            // Current score. Also equals to total number of correct presses
+int currentScore = 0;                     // Current score. Also equals to total number of correct presses
 volatile bool gameRunning = false;
-int missedPresses = 0;                    // Ends the game if reaches 5
+int missedPressesAllowed = 5;             // Ends the game if this amount of missed presses is reached
+int missedPresses = 0;                    // Running amount of missed presses by the player
 
-volatile int highScore;
+volatile int countOfTimerInterrupts = 0;  // Increased on every timer interrupt. Used as running count of how long the game has been running / idling
+int timerInterruptSpeed = 15624;          // Timer interrupt interval (15624 = 1 Hz)
+
+bool energySaveAllowed = true;            // Allowed to enter Energy saving mode
+int energySaveAfterSeconds = 300;
+
+int highScore;
 int highScoreMemoryAddress = 0;           // EEPROM memory address where the high score is saved
+bool highScoreShowAllowed = true;         // Allowed to show High Scores while the game is idling
+int highScoreShowAfterSeconds = 5;
 
-volatile int numberOfTimerInterrupts = 0; // Increased on every timer interrupt. Used to decrease timer interrupt interval
-volatile int timerInterruptSpeed = 15624; // Timer interrupt interval (15624 = 1Hz)
+bool timerIncreaseAllowed = false;        // After every 10 timer interrupts, decrease the time between presses (makes the game harder)
 
-volatile bool energySaveAllowed = true;
-volatile bool highScoreShowAllowed = true;  // after 5 seconds of inactivity, show high score
-volatile bool timerIncreaseAllowed = false; // after 10 timer interrupts, decreace the time between presses
-
-long ledBlinkStartTime = 0;
-bool ledIsBlinking = false;
 
 void setup()
 {
-  Serial.begin(9600); // Serial for testing purposes
   initButtonsAndButtonInterrupts();
   initializeTimer();
   initializeLeds();
   initializeHighScore();
-  initializeDisplay();  
-  interrupts();  
+  initializeDisplay();
+  interrupts();
 }
 
 void loop()
 {
   if(newTimerInterrupt == true)
   {
-    clearAllLeds();
     newTimerInterrupt = false;
+    clearAllLeds();
     generateNewRandomNumber();
     setLed(randomNumber);
   }
   
-  if(missedPresses > 6)
+  if(missedPresses > missedPressesAllowed)
   {
     endGame();
   }
@@ -59,18 +60,23 @@ void loop()
   {
     if(buttonNumber>=0 && buttonNumber < 4)
     {
-      checkGame(buttonNumber);  // check the game if 0<=buttonNumber<4
+      // check the game if 0<=buttonNumber<4
+      checkGame(buttonNumber);
       buttonNumber = -1;
     }
-    if(numberOfTimerInterrupts % 10 == 0 && numberOfTimerInterrupts > 9 && timerIncreaseAllowed)
+
+    if(countOfTimerInterrupts % 10 == 0 && countOfTimerInterrupts > 9 && timerIncreaseAllowed)
     {
       timerIncreaseAllowed = false; // needs to be set so this happens only once per 10
-      timerInterruptSpeed = timerInterruptSpeed * 0.9;  // Speeds up the timer by 10% every 10th interrupt
+      // Speeds up the timer by 10% every 10th interrupt
+      timerInterruptSpeed = timerInterruptSpeed * 0.9;
       OCR1A = timerInterruptSpeed;
     }
-    if(numberOfTimerInterrupts % 10 == 1)
+    
+    if(countOfTimerInterrupts % 10 == 1)
     {
-      timerIncreaseAllowed = true;  // We are at 11th interrupt -> allow to increase again at the next full 10
+      // We are at 11th interrupt -> allow to increase again at the next full 10
+      timerIncreaseAllowed = true;
     }
   }
 
@@ -78,46 +84,45 @@ void loop()
   {
     if(buttonNumber == 3)
     {
-      ledIsBlinking = false;
       startTheGame();
     }
-    
-    // After 5 timer interrupts, show high score
-    if(numberOfTimerInterrupts == 5 && highScoreShowAllowed)
+
+    if(countOfTimerInterrupts == highScoreShowAfterSeconds && highScoreShowAllowed) // Show High Score
     {
       highScoreShowAllowed = false;
       showNumber(highScore);
     }
-    while(numberOfTimerInterrupts == 300 && energySaveAllowed)
+
+    if(countOfTimerInterrupts == energySaveAfterSeconds && energySaveAllowed) // Show Energy save mode
     {
       energySaveAllowed = false;
-      ledIsBlinking = true;
       clearAllLeds();
       shutDownDisplay();
-        while(ledIsBlinking)  // Blinks led when energy save is on
-        {
-          setLed(3);
-          delay(100);
-          clearAllLeds();
-          delay(1000);
-          if(buttonNumber > -1 && buttonNumber <= 2)  // Brings back highscore when any button is pressed
-          {
-            buttonNumber = -1;
-            ledIsBlinking = false;
-            energySaveAllowed = true;
-            numberOfTimerInterrupts = 0;
-            enableDisplay();
-            showNumber(highScore);
-          }
-          if(buttonNumber == 3)
-          {
-            startTheGame;          
-          }
-        }
-    }
-  }
 
-  
+      bool ledIsBlinking = true;
+
+      while(ledIsBlinking)  // Blinks led when energy save is on
+      {
+        setLed(3);
+        delay(100);
+        clearAllLeds();
+        delay(1000);
+        if(buttonNumber > -1 && buttonNumber <= 2)  // Brings back highscore when any button is pressed
+        {
+          buttonNumber = -1;
+          ledIsBlinking = false;
+          energySaveAllowed = true;
+          countOfTimerInterrupts = 0;
+          enableDisplay();
+          showNumber(highScore);
+        }
+        if(buttonNumber == 3)
+        {
+          startTheGame;
+        }
+      }
+    }
+  }  
 }
 
 void initializeTimer(void)
@@ -133,15 +138,15 @@ void initializeTimer(void)
 
   TIMSK1 |= (1 << OCIE1A); // Timer1 interrupts are now enabled
 }
+
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
-  numberOfTimerInterrupts++;
+  countOfTimerInterrupts++;
   if(gameRunning)
   {
     newTimerInterrupt = true; // generates new random number in loop
   }
 }
-
 
 void checkGame(byte nbrOfButtonPush)
 {
@@ -155,6 +160,7 @@ void checkGame(byte nbrOfButtonPush)
   }
   else
   {
+    // User pressed incorrectly
     endGame();
   }
 }
@@ -163,23 +169,19 @@ void endGame()
 {
   gameRunning = false;
   missedPresses = 0;
-  numberOfTimerInterrupts = 0;
+  countOfTimerInterrupts = 0;
   newTimerInterrupt = false; // No more new random numbers generated
   timerInterruptSpeed = 15624;
   OCR1A = timerInterruptSpeed;
+  highScoreShowAllowed = true;
+  energySaveAllowed = true;
 
   if(currentScore > highScore)
   {
     highScore = currentScore;
     writeHighScore(highScore);
   }
-  /*
-    Reset the timer interrupt amount here
-    We can then easily compare for example if the amount is 5
-    -> 5 seconds has passed -> show high score
-  */
-  highScoreShowAllowed = true;
-  energySaveAllowed = true;
+
   setAllLeds();
   delay(500);
   clearAllLeds();
@@ -187,12 +189,11 @@ void endGame()
 
 void initializeGame()
 {
-  clearAllLeds();
   initializeTimer();
   gameRunning = true;
   buttonNumber = -1;
   missedPresses = 0;
-  numberOfTimerInterrupts = 0;
+  countOfTimerInterrupts = 0;
   currentScore = 0;
   enableDisplay();
 }
@@ -227,7 +228,7 @@ void writeHighScore(int score)
 
 void generateNewRandomNumber()
 {
-  randomNumber = random(0, 4); // 0,1,2,3
-  numberList[currentScore + missedPresses] = randomNumber;
-  missedPresses++;
+    randomNumber = random(0, 4); // 0,1,2,3
+    numberList[currentScore + missedPresses] = randomNumber;
+    missedPresses++;
 }
