@@ -41,12 +41,19 @@ void startTheGame(void);
 void endGame(void);
 
 /*
-  Reads the high score from EEPROM memory to variable highScore. If not found, creates a new record to EEPROM.
+  Reads the high score from EEPROM memory address defined in variable highScoreMemoryAddress to variable highScore.
+  If not found, creates a new record to EEPROM.
+
+  Note: The value in address defined in highScoreMemoryAddress should be int 200.
+  This is used as a check byte to make sure the memory address contains our high score information.
+  Actual high score will be read from memory address highScoreMemoryAddress + 1.
 */
 void initializeHighScore(void);
 
 /*
-  Writes the high score to EEPROM
+  Writes the high score to EEPROM memory address defined in variable highScoreMemoryAddress.
+  
+  Note: The address in highScoreMemoryAddress will be used as a check byte, and the actual score will be written to address highScoreMemoryAddress + 1.
 
   Parameters:
   int score (Example value 22)

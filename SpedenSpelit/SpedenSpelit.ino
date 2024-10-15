@@ -171,7 +171,7 @@ void endGame()
   missedPresses = 0;
   countOfTimerInterrupts = 0;
   createNewRandomNumber = false; // No more new random numbers generated
-  timerInterruptSpeed = 15624;
+  timerInterruptSpeed = 15624;   // Reset timer to 1 Hz
   OCR1A = timerInterruptSpeed;
   highScoreShowAllowed = true;
   energySaveAllowed = true;
@@ -182,7 +182,7 @@ void endGame()
     writeHighScore(highScore);
   }
 
-  setAllLeds();
+  setAllLeds();  // Flashes LEDs as an indication of a game over
   delay(500);
   clearAllLeds();
 }
