@@ -130,7 +130,5 @@ void show1()
         delay(1500);
         clearAllLeds();
         delay(2000);
-    
     }
-
 }
