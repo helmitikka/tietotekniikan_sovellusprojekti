@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 extern bool gameRunning;
-extern volatile int currentScore;
+extern int currentScore;
 
 /*
   Initializes all LEDs in ledPins
