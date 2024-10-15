@@ -43,21 +43,21 @@ void setup()
 
 void loop()
 {
-  if(createNewRandomNumber == true)
-  {
-    createNewRandomNumber = false;
-    clearAllLeds();
-    generateNewRandomNumber();
-    setLed(randomNumber);
-  }
-  
-  if(missedPresses > missedPressesAllowed)
-  {
-    endGame();
-  }
-  
   if(gameRunning)
   {
+    if(createNewRandomNumber == true)
+    {
+      createNewRandomNumber = false;
+      clearAllLeds();
+      generateNewRandomNumber();
+      setLed(randomNumber);
+    }
+
+    if(missedPresses > missedPressesAllowed)
+    {
+      endGame();
+    }
+
     if(buttonNumber>=0 && buttonNumber < 4)
     {
       // check the game if 0<=buttonNumber<4
@@ -72,7 +72,7 @@ void loop()
       timerInterruptSpeed = timerInterruptSpeed * 0.9;
       OCR1A = timerInterruptSpeed;
     }
-    
+
     if(countOfTimerInterrupts % 10 == 1)
     {
       // We are at 11th interrupt -> allow to increase again at the next full 10
@@ -142,10 +142,7 @@ void initializeTimer(void)
 ISR(TIMER1_COMPA_vect) // This is triggered on every Timer interrupt
 {
   countOfTimerInterrupts++;
-  if(gameRunning)
-  {
-    createNewRandomNumber = true; // generates new random number in loop
-  }
+  createNewRandomNumber = true; // generates new random number in loop
 }
 
 void checkGame(byte nbrOfButtonPush)
