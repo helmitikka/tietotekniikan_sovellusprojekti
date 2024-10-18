@@ -53,12 +53,12 @@ Projekti jakautuu neljään päämoduuliin:
 - **Display** - Näyttää pelitulokset ja High Scoren
 - **Leds** - Hallinnoi LEDien sytyttämistä.
 
-**Laitteiston yksityiskohdat:**
+### **Laitteiston yksityiskohdat:**
 Laitteistosta on kaksi fyysistä versiota. Toinen on juotettu versio, joka on sijoitettu 3D-tulostetun laatikon sisälle. Toinen versio on rakennettu koekytkentäalustoille. Molemmissa versioissa on kytkennät Arduinolle, LEDeille, painonapeille, siirtorekistereille ja 7-segmenttinäytöille.
 
 ![Valokuva koekytkentäalustalle tehdystä kytkennästä](/Dokumentit/Kuvat/Readme/fyysinen_kytkenta_transparent_small.png)
 
-**Laitteisto ja komponentit:**
+### **Laitteisto ja komponentit:**
 - **Arduino Uno Rev 3:** Mikrokontrolleri, joka ohjaa LED-valoja, nappeja ja näyttöjä sekä toteuttaa pelin logiikan. Arduino on yhdistettynä tietokoneeseen **USB 3.0 kaapelilla.**
 - **LED-valot:** Neljä värillistä LED-valoa: punainen, keltainen, vihreä, sininen
 - **Painikkeet:** Neljä painonappia (Panasonic ESE20C321) 
@@ -70,7 +70,7 @@ Laitteistosta on kaksi fyysistä versiota. Toinen on juotettu versio, joka on si
 - **Juotoslauta:** Multicomp PRO PCB Hi density single eurocard
 - **Virtalähde:** Arduino sai virran tietokoneen USB-portin kautta.
 
-**Ohjelmisto:**
+### **Ohjelmisto:**
 - **Visual Studio Code:** Pääasiallinen ohjelmointiympäristö C/C++-kielisen koodin kirjoittamiseen. Ohjelmistoon oli asennettu laajennukset: Arduino v0.0.4 (moozzyk), Arduino Community Edition v0.7.2 (vscode-arduino), GitLens - Git Supercharged v15.6.1 (GitKraken), Serial Monitor v0.13.1 (Microsoft).
 - **Arduino IDE 2.3.3:** Ohjelmistoympäristö, jota käytettiin VS Codessa ohjelmoinnin tukena.
 - **GitHub:** Projektin versionhallinta ja julkaisu
@@ -82,18 +82,18 @@ Laitteistosta on kaksi fyysistä versiota. Toinen on juotettu versio, joka on si
 
 ## 5. Ominaisuudet
 
-**Perustoiminnot**
+### **Perustoiminnot**
 Peli käynnistyy, kun oikeanpuoleisinta (sinistä) nappia painetaan, ja se jatkuu niin pitkään, kunnes pelaaja tekee virheen. Pelaaja seuraa LED-valoja, jotka syttyvät satunnaisessa järjestyksessä, ja painaa vastaavia nappeja. Jos pelaaja painaa väärää nappia, kaikki LED-valot syttyvät Game Over -merkiksi. Pistetulos kasvaa, kun pelaaja reagoi oikein vaihtuviin LED-valoihin ja painelee valoja vastaavia nappeja tarpeeksi nopeasti.
 
-**Pelin eteneminen ja vaikeutuminen**
+### **Pelin eteneminen ja vaikeutuminen**
 Peli vaikeutuu pelaajan edistyessä. Kun pelaaja on painanut kymmenen oikeaa painallusta, pelin nopeus kasvaa 10 %. Ajastin nopeutuu joka kymmenennen painalluksen jälkeen: valot syttyvät nopeammin ja reaktioaika lyhenee. Peli jatkuu, kunnes pelaaja tekee virheen ja painaa väärää nappia.
 Pisteiden seuranta ja näyttö
 Oikeasta painalluksesta pelaaja saa yhden pisteen, joka päivittyy heti 7-segmenttinäytölle siirtorekisterin kautta. Näytöllä oleva pistemäärä kertoo reaaliaikaisesti pelaajan edistymisestä. 
 
-**High Score -toiminto**
+### **High Score -toiminto**
 Pelin päättymisen jälkeen ohjelma tarkistaa, onko pelaajan saavuttama nykyinen pistemäärä suurempi kuin aikaisempi High Score (ellei kyseessä ole ensimmäinen pelikerta, jolloin ennätys on ensimmäisen pelikerran tulos). Jos pistemäärä on suurempi, kuin edellinen ennätys, se tallentuu EEPROMiin, missä ennätys säilyy muistissa myös pelisessioiden välillä (Arduino 2024a). Ennätys näytetään aina kun peli käynnistetään ja peli ei ole juuri sillä hetkellä käynnissä.
 
-**Virransäästötila**
+### **Virransäästötila**
 Jos peliä ei käytetä 300 millisekuntiin, se siirtyy virransäästötilaan. Tässä tilassa kaikki LED-valot ja näytöt sammuvat, mikä vähentää virrankulutusta. LED vilkkuu merkkinä siitä, että peli on virransäästötilassa. Peli poistuu virransäästötilasta, kun mitä tahansa nappia painetaan, jolloin näyttö aktivoituu ja piste-ennätys (High Score) tulee takaisin näkyviin. Pelaaja voi käynnistää pelin uudelleen painamalla reunimmaista nappia oikealla (sininen nappi).
 
 ## 6. Ongelmat ja ratkaisut
@@ -115,26 +115,26 @@ Tulevaisuudessa peliä voisi kehittää lisäämällä sille uusia ominaisuuksia
 
 ## 8. Asennus
 
-**Tarvittavat välineet ja materiaalit:**
+### **Tarvittavat välineet ja materiaalit:**
 - **Ohjelmisto:** Arduino IDE (https://www.arduino.cc/en/software)
 - **Arduino Uno:** tai vastaava Arduino-yhteensopiva piirikortti ja USB 3.0 tai 2.0 kaapeli
 - **Koekytkentäalusta:** Vähintään kaksi 400-kytkentäpisteen alustaa
 - **Komponentit:** 
-• 2 kpl 7-segmenttinäyttöä (esim. KINGBRIGHT SC52-11EWA)
-• 2 kpl 74HC595 siirtorekisteriä
-• 4 kpl painonappia (esim. Panasonic ESE20C321)
-• 16 kpl vastuksia (esim. 220 Ω) 7-segmenttinäytöille
-• 4 kpl vastuksia (noin 500 Ω) LED-valoille
-• Uros-uros hyppylankoja
+     • 2 kpl 7-segmenttinäyttöä (esim. KINGBRIGHT SC52-11EWA)
+     • 2 kpl 74HC595 siirtorekisteriä
+     • 4 kpl painonappia (esim. Panasonic ESE20C321)
+     • 16 kpl vastuksia (esim. 220 Ω) 7-segmenttinäytöille
+     • 4 kpl vastuksia (noin 500 Ω) LED-valoille
+     • Uros-uros hyppylankoja
 
-**Lähdekoodin lataaminen ja asennus**
+### **Lähdekoodin lataaminen ja asennus**
 1. Lataa SpedenSpelit kansio ja tallenna tiedosto tietokoneelle
 2. Käynnistä Arduino IDE -ohjelma ja avaa tiedosto ”SpedenSpelit.ino”, joka sisältää pääohjelman. 
 3. Tarkista, että Arduino IDEssä on valittuna portti, johon Arduino on kytketty (”Tools” -> ”Port”)
 4. Tarkista koodi painamalla vasemmassa yläkulmassa olevaa ”Verify”-nappia (kuvakkeessa on nuoli oikealle) varmistaaksesi, että koodi on kunnossa.
 5. Aja koodi sisään Arduinolle painamalla ”Upload”-painiketta
 
-**Kytkentä**
+### **Kytkentä**
 1. Valmistele komponentit: Kerää kaikki tarvittavat komponentit ja koekytkentäalustat.
 2. Kytke komponentit: Seuraa kytkentäkaaviota ja kytke komponentit koekytkentäalustoille. 
 3. Kytke Arduino: Kytke Arduino koekytkentäalustaan hyppylankojen avulla.
@@ -142,7 +142,7 @@ Tulevaisuudessa peliä voisi kehittää lisäämällä sille uusia ominaisuuksia
 
 ![Pelin piirikaavio](Dokumentit/Kuvat/piirikaavio_final.png)
 
-**Pelin pelaaminen**
+### **Pelin pelaaminen**
 Kun koodi on ladattu Arduinoon ja kytkentä on valmis, voit aloittaa pelin painamalla oikeanpuoleisinta painonappia.
 
 HOX! Jos kohtaat ongelmia, tarkista ensin, että kaikki kytkennät ovat oikein ja että olet valinnut oikean portin Arduino IDE:ssä. Voit myös yrittää etsiä ratkaisuja Arduino-foorumeilta tai muista lähteistä. 
@@ -150,23 +150,23 @@ Jos haluaa pysyvän version pelistä, komponentit voi juottaa yhteen. Juottamine
 
 ## 9. Käyttö
 
-**Pelin logiikka**
+### **Pelin logiikka**
 ![Pelin vuokaavio](Dokumentit/Kuvat/vuokaavio_final.png)
 
-**Pelin käynnistäminen ja lopettaminen**
+### **Pelin käynnistäminen ja lopettaminen**
 - Käynnistäminen: Peli alkaa painamalla reunimmaista nappia oikealla (sininen nappi) laitteen ollessa päällä. 
 - Lopettaminen: 
     • Väärä vastaus: Jos painat väärää nappia, peli päättyy ja kaikki LED-valot syttyvät hetkeksi ilmoittaen pelin päättymisestä.
     • Aikaraja: Jos et paina nappia noin 5 sekunnin sisään, peli päättyy automaattisesti.
     • Virran katkaisu: Voit lopettaa pelin irrottamalla Arduinon  tietokoneesta.
 
-**Pelin kulku**
+### **Pelin kulku**
 - Pelaaminen: Seuraa LED-valojen syttymisjärjestystä ja paina vastaavia nappeja.
 - Pisteet: Pisteet päivittyvät reaaliaikaisesti 7-segmenttinäytölle jokaisen oikean painalluksen  jälkeen.
 - Nopeutuminen: Pelin yksi kierros kestää kymmenen painallusta. Peli nopeutuu automaattisesti 10 % jokaisen kierroksen jälkeen. Pelin nopeutuminen havaitaan nopeammin syttyvistä LED-valoista, jolloin myös pelaajalla on vähemmän aikaa reagoida.
 - High Score: Korkein saavutettu pistemäärä (ennätys) näytetään 7-segmenttinäytöllä laitteen ollessa päällä ja virransäästötilan jälkeen kun peli ei sillä hetkellä pelattavana.
 
-**Virransäästötila**
+### **Virransäästötila**
 - Aktivoituminen: Jos mitään nappia ei paineta 3 minuuttiin, peli siirtyy virransäästötilaan. Tällöin 7-segmenttinäytöt sammuvat ja yksi LED alkaa vilkkua.
 - Herättäminen: Peli herää, kun mitä tahansa nappia painetaan
 
