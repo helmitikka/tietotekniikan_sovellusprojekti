@@ -11,19 +11,19 @@
 
 ## Sisältö
 
-- [1. Johdanto ja projektin tavoitteet](#1-johdanto-ja-projektin-tavoitteet)
-- [2. Projektin tausta ja rajoitukset](#2-projektin-tausta-ja-rajoitukset)
-- [3. Käytetyt tekniikat, komponentit ja työkalut](#3-käytetyt-tekniikat-komponentit-ja-työkalut)
-- [4. Projektirakenne ja laitteiston yksittyiskohdat](#4-projektirakenne-ja-laitteiston-yksityiskohdat)
-- [5. Ominaisuudet](#5-ominaisuudet)
-- [6. Ongelmat ja ratkaisut](#6-ongelmat-ja-ratkaisut)
-- [7. Repositoryn rakenne](#7-repositoryn-rakenne)
-- [8. Asennus](#8-asennus)
-- [9. Käyttö](#9-käyttö)
-- [10. Arviointi](#10-arviointi)
-- [11. Lisenssi](#11-lisenssi)
-- [12. Tekijät](#12-tekijät)
-- [13. Lähteet](#13-lähteet)
+[1. Johdanto ja projektin tavoitteet](#1-johdanto-ja-projektin-tavoitteet)
+[2. Projektin tausta ja rajoitukset](#2-projektin-tausta-ja-rajoitukset)
+[3. Käytetyt tekniikat, komponentit ja työkalut](#3-käytetyt-tekniikat-komponentit-ja-työkalut)
+[4. Projektirakenne ja laitteiston yksittyiskohdat](#4-projektirakenne-ja-laitteiston-yksityiskohdat)
+[5. Ominaisuudet](#5-ominaisuudet)
+[6. Ongelmat ja ratkaisut](#6-ongelmat-ja-ratkaisut)
+[7. Repositoryn rakenne](#7-repositoryn-rakenne)
+[8. Asennus](#8-asennus)
+[9. Käyttö](#9-käyttö)
+[10. Arviointi](#10-arviointi)
+[11. Lisenssi](#11-lisenssi)
+[12. Tekijät](#12-tekijät)
+[13. Lähteet](#13-lähteet)
 
 ## 1. Johdanto ja projektin tavoitteet
 
@@ -74,9 +74,7 @@ Laitteistosta on kaksi fyysistä versiota. Toinen on juotettu versio, joka on si
 - **Visual Studio Code:** Pääasiallinen ohjelmointiympäristö C/C++-kielisen koodin kirjoittamiseen. Ohjelmistoon oli asennettu laajennukset: Arduino v0.0.4 (moozzyk), Arduino Community Edition v0.7.2 (vscode-arduino), GitLens - Git Supercharged v15.6.1 (GitKraken), Serial Monitor v0.13.1 (Microsoft).
 - **Arduino IDE 2.3.3:** Ohjelmistoympäristö, jota käytettiin VS Codessa ohjelmoinnin tukena.
 - **GitHub:** Projektin versionhallinta ja julkaisu
-- **Kaavioiden piirtäminen:**
-    • **draw.io:** Vuokaaviot
-    • **circuit-diagram.org:** Piirikaaviot
+- **Kaavioiden piirtäminen:** **draw.io** - vuokaaviot ja **circuit-diagram.org** - piirikaaviot
 - **Wokwi:** Pelin simulointi
 - **Microsoft Teams:** Projektin hallinta, tiedonjako ja ryhmätyöskentely.
 - **ChatGPT ja Gemini:** Tekoälytyökalut työskentelyn tukena
@@ -122,12 +120,12 @@ Tulevaisuudessa peliä voisi kehittää lisäämällä sille uusia ominaisuuksia
 - **Arduino Uno:** tai vastaava Arduino-yhteensopiva piirikortti ja USB 3.0 tai 2.0 kaapeli
 - **Koekytkentäalusta:** Vähintään kaksi 400-kytkentäpisteen alustaa
 - **Komponentit:** 
-    • 2 kpl 7-segmenttinäyttöä (esim. KINGBRIGHT SC52-11EWA)
-    • 2 kpl 74HC595 siirtorekisteriä
-    • 4 kpl painonappia (esim. Panasonic ESE20C321)
-    • 16 kpl vastuksia (esim. 220 Ω) 7-segmenttinäytöille
-    • 4 kpl vastuksia (noin 500 Ω) LED-valoille
-    • Uros-uros hyppylankoja
+• 2 kpl 7-segmenttinäyttöä (esim. KINGBRIGHT SC52-11EWA)
+• 2 kpl 74HC595 siirtorekisteriä
+• 4 kpl painonappia (esim. Panasonic ESE20C321)
+• 16 kpl vastuksia (esim. 220 Ω) 7-segmenttinäytöille
+• 4 kpl vastuksia (noin 500 Ω) LED-valoille
+• Uros-uros hyppylankoja
 
 **Lähdekoodin lataaminen ja asennus**
 1. Lataa SpedenSpelit kansio ja tallenna tiedosto tietokoneelle
@@ -198,6 +196,9 @@ Tämän projektin toteuttivat Oulun ammattikorkeakoulun opiskelijat:
 - Elin
 
 ## 13. Lähteet
+
 Arduino 2024a. EEPROM Library. Luettavissa: https://docs.arduino.cc/learn/built-in-libraries/eeprom/. Luettu 24.9.2024
+
 Arduino 2024b. Debounce on a Pushbutton. Luettavissa: https://docs.arduino.cc/built-in-examples/digital/Debounce/. Luettu 23.9.2024
+
 Coinline 2024. Nopeustesti -peli. Luettavissa: https://www.coinline.fi/nopeustesti-peli/. Luettu 15.10.2024
