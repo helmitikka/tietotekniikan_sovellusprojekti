@@ -93,6 +93,8 @@ Laitteistosta on kaksi fyysistä versiota. Toinen on juotettu versio, joka on si
 - **Microsoft Teams:** Projektin hallinta, tiedonjako ja ryhmätyöskentely.
 - **ChatGPT ja Gemini:** Tekoälytyökalut työskentelyn tukena
 - **Shields.io:** Palvelu tunnusmerkkien (badge) luomiseen, jotka on esillä projektin GitHubin sivulla
+- **Autodesk Fusion:** Kotelon 3D-mallinnus
+- **OrcaSlicer:** 3D-mallin viipalointiohjelma (slicer), jonka avulla malli saadaan 3D-tulostimen ymmärtämään muotoon
 
 ## 5. Ominaisuudet
 
