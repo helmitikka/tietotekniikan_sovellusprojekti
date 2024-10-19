@@ -12,10 +12,7 @@ void initializeTimer(void);
 ISR(TIMER1_COMPA_vect);
 
 /*
-  initializeGame() subroutine is used to initialize all variables
-  needed to store random numbers and player button push data.
-  This function is called from startTheGame() function.
-  
+  Sets game variables to their initial values for a new game
 */
 void initializeGame(void);
 
@@ -27,34 +24,41 @@ void initializeGame(void);
   and if the latest press was right, game display is incremented
   by 1.
   
-  Parameters
-  byte lastButtonPress of the player 0 or 1 or 2 or 3
+  Parameters:
+  byte lastButtonPress (Example value 1)
   
 */
 void checkGame(byte);
 
-
 /*
-  startTheGame() subroutine calls InitializeGame()
-  function and enables Timer1 interrupts to start
-  the Game.
+  Starts a new game
 */
 void startTheGame(void);
 
 /*
-  Ends the game when the player pressed wrongly
+  Ends the game when the player pressed wrongly, and resets the game state
 */
 void endGame(void);
 
 /*
-  Reads the high score from EEPROM memory to variable highScore
+  Reads the high score from EEPROM memory address defined in variable highScoreMemoryAddress to variable highScore.
+  If not found, creates a new record to EEPROM.
+
+  Note: The value in address defined in highScoreMemoryAddress should be int 200.
+  This is used as a check byte to make sure the memory address contains our high score information.
+  Actual high score will be read from memory address highScoreMemoryAddress + 1.
 */
 void initializeHighScore(void);
 
 /*
-  Reads the high score from EEPROM memory to variable highScore
+  Writes the high score to EEPROM memory address defined in variable highScoreMemoryAddress.
+  
+  Note: The address in highScoreMemoryAddress will be used as a check byte, and the actual score will be written to address highScoreMemoryAddress + 1.
+
+  Parameters:
+  int score (Example value 22)
 */
-void setHighScore(int);
+void writeHighScore(int);
 
 /*
   Generates a new random number, adds it to numberList, and increments missedPresses

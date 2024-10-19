@@ -4,11 +4,8 @@ const int ledPins[] = {2,3,4,5}; // Pins for LEDs (D2,D3,D4,D5)
 
 void initializeLeds()
 { 
-    Serial.println("Ititializing leds");
     for (int i = 0; i < sizeof(ledPins) / sizeof(ledPins[0]); i++)
     {
-        Serial.print("LED pin: ");
-        Serial.println(ledPins[i]);
         pinMode(ledPins[i], OUTPUT);
     }
     setAllLeds();
@@ -36,7 +33,6 @@ void setAllLeds()
         digitalWrite(ledPins[i], HIGH);
     }
 }
-
 
 void show1()
 {
@@ -134,17 +130,5 @@ void show1()
         delay(1500);
         clearAllLeds();
         delay(2000);
-    
-    }
-
-}
-
-void show2(int rounds)
-{
-// see requirements for this function from leds.h
-    while(gameRunning == false && currentScore > 0)
-    {
-        rounds = 10;
-        //for()
     }
 }

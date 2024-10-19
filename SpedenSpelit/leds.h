@@ -2,8 +2,8 @@
 #define LEDS_H
 #include <Arduino.h>
 
-extern volatile bool gameRunning;
-extern volatile int currentScore;
+extern bool gameRunning;
+extern int currentScore;
 
 /*
   Initializes all LEDs in ledPins
@@ -29,16 +29,5 @@ void setAllLeds(void);
   1-15 binary number show on LEDs
 */
 void show1(void);
-
-/*
-  show2(int) subroutine shows leds 0,1,2,3,0,1,2,3,.... with increasing
-  changing rate. And when top change speed has been reached
-
-    Parameters:
-  
-  int rounds: This parameter determines how many times 0,1,2,3 sequence
-              is shown. 
-*/
-void show2(int);
 
 #endif
