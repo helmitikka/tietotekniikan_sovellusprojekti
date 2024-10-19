@@ -39,7 +39,9 @@
 
 ## 1. Johdanto ja projektin tavoitteet
 
-Tämä projekti on osa Oulun ammattikorkeakoulun "Tietotekniikan sovellusprojekti" -kurssia. Projektin tavoitteena oli kehittää reaktionopeutta testaava peli Arduinon avulla. Projektin myötä opittiin mikroprosessoreiden käytön perusteista, ohjelmoinnista ja laitteiston hallinnasta. Lisäksi harjoiteltiin dokumentointia ja ryhmätyötaitoja
+Tämä projekti on osa Oulun ammattikorkeakoulun "Tietotekniikan sovellusprojekti" -kurssia. Projektin tavoitteena oli kehittää reaktionopeutta testaava peli Arduinon avulla. Projektin myötä opittiin mikroprosessoreiden käytön perusteista, ohjelmoinnista ja laitteiston hallinnasta. Lisäksi harjoiteltiin dokumentointia ja ryhmätyötaitoja.
+
+Projektista on myös tehty video, joka esittelee pelin koodin ja toimintaperiaatteet. Siirry videoon [tästä.](https://youtu.be/SnvKvCO8YdE)
 
 ![Valokuva valmiista laitteesta](/Dokumentit/Kuvat/Readme/tuote-valokuva-pieni.jpg)
 
